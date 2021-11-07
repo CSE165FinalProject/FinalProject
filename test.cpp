@@ -5,16 +5,21 @@
 
 using namespace std;
 
-void sy();
+void sy(){
+    cout << "Sy implement a function here" << endl;
+}
 void ralph();
 void vedaant(int a, int b, int c){
     int sum = a+b+c;
     cout<<sum;
 };
-
+void ralph()
+{
+    cout << "Ralph is here" << endl;
+}
 int main(){
 
-    sy(); //implement a function of your choice
+    sy() //implement a function of your choice
     ralph(); //implement a function of your choice
     vedaant(4,54,23); //implement a function of your choice
 
