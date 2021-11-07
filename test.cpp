@@ -8,7 +8,10 @@ using namespace std;
 void sy();
 void ralph();
 void vedaant();
-
+void ralph()
+{
+    cout << "Ralph is here" << endl;
+}
 int main(){
 
     sy(); //implement a function of your choice
