@@ -5,13 +5,15 @@
 
 using namespace std;
 
-void sy();
+void sy(){
+    cout << "Sy implement a function here" << endl;
+}
 void ralph();
 void vedaant();
 
 int main(){
 
-    sy(); //implement a function of your choice
+    sy() //implement a function of your choice
     ralph(); //implement a function of your choice
     vedaant(); //implement a function of your choice
 
