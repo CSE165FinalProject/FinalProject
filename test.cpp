@@ -20,5 +20,5 @@ int main(){
 void vedaant(){
 
 
-    cout<<"This professor sucks";
+    cout<<"This professor sucks a**. ";
 }
