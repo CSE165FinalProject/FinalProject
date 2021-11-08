@@ -16,6 +16,12 @@ int main(){
     vedaant(); //implement a function of your choice
 
 }
+
+void vedaant(){
+
+
+    cout<<"This professor sucks a**. ";
+}
 void ralph()
 {
     cout << "Ralph here" << endl;
