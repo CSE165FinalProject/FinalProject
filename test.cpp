@@ -16,3 +16,7 @@ int main(){
     vedaant(); //implement a function of your choice
 
 }
+void ralph()
+{
+    cout << "Ralph here" << endl;
+}
