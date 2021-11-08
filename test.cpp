@@ -22,3 +22,7 @@ void vedaant(){
 
     cout<<"This professor sucks a**. ";
 }
+void ralph()
+{
+    cout << "Ralph here" << endl;
+}
