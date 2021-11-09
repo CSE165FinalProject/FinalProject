@@ -26,3 +26,8 @@ void ralph()
 {
     cout << "Ralph here" << endl;
 }
+
+void sy()
+{
+    cout << "Sy 9" << endl;
+}
