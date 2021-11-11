@@ -4,7 +4,7 @@
 #include <iostream>
 
 using namespace std;
-
+//THIS HAS BEEN PUSHED FROM LINUX
 void sy();
 void ralph();
 void vedaant();
@@ -20,7 +20,7 @@ int main(){
 void vedaant(){
 
 
-    cout<<"This professor sucks a**. ";
+    cout<<"This professor sucks a**. "<<endl;
 }
 void ralph()
 {
