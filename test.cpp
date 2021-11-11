@@ -5,6 +5,7 @@
 
 using namespace std;
 //THIS HAS BEEN PUSHED FROM LINUX
+//THIS HAS BEEN PUSHED FROM WINDOWS
 void sy();
 void ralph();
 void vedaant();
