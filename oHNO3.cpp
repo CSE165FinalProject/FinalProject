@@ -2,3 +2,17 @@
 //Tyler Armstrong, add names guys
 //Nov 17, 2021
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+
+#ifdef __linux__
+#endif
+
+using namespace std; 
+
+#include "title.cpp"
+
+int main(){
+
+}
