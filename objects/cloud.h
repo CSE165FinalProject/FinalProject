@@ -31,7 +31,7 @@ class BadCloud
 
         //Shows the Cloud on the screen
         void render();
-		friend character;
+		//friend character;
 		int getXPOS();
 		//int getYPOS();
     private:
