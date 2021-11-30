@@ -30,10 +30,12 @@ class character
 
         //Moves the dot
         void move();
-
+		//friend BadCloud;
         //Shows the dot on the screen
         void render();
-
+		//Get the position of character in x direction
+		int getXPOSC();
+		//void detectingCLOUDATTACK(BadCloud&ref);
     private:
         //The X and Y offsets of the dot
         int mPosX, mPosY;
@@ -41,6 +43,10 @@ class character
         //The velocity of the dot
         int mVelX, mVelY;
 };
+int character::getXPOSC()
+{
+	return mPosX;
+}
 character::character()
 {
 	//Initialize the offsets

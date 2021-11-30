@@ -13,11 +13,11 @@ class BadCloud
 {
     public:
         //The dimensions of the Cloud
-        static const int CLOUD_WIDTH = 20;
-        static const int CLOUD_HEIGHT = 20;
+        static const int CLOUD_WIDTH = 45;
+        static const int CLOUD_HEIGHT = 24;
 
         //Maximum axis velocity of the Cloud
-        static const int CLOUD_VEL = 2;
+        static const int CLOUD_VEL = 6;
         //Motion of the cloud left to right and vice version
         //void movementBADCLOUD();
         //Initializes the variables
@@ -31,14 +31,20 @@ class BadCloud
 
         //Shows the Cloud on the screen
         void render();
-
+		friend character;
+		int getXPOS();
+		//int getYPOS();
     private:
-        //The X and Y offsets of the dot
+        //The X and Y offsets of the cloud
         int mPosX, mPosY;
 
         //The velocity of the Cloud
         int mVelX, mVelY;
 };
+int BadCloud::getXPOS()
+{
+	return mPosX;
+}
 BadCloud::BadCloud()
 {
 	//Initialize the offsets

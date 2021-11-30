@@ -9,11 +9,12 @@
 #include "objects/cloud.h"
 //#include "objects/character.h"
 #include "objects/LTexture.h"
+#include "detectingCLOUD.h"
 //#include "createSDLWIN.h"
 //#include "imageloader.cpp"
 //Screen dimension constants
-extern const int SCREEN_WIDTH = 521;
-extern const int SCREEN_HEIGHT = 331;
+extern const int SCREEN_WIDTH = 944;
+extern const int SCREEN_HEIGHT = 500;
 bool quit;
 int timer;
 
@@ -128,7 +129,7 @@ bool loadMedia()
 		success = false;
 	}
 	//Loud Bad Cloud
-	if (!gBadCloudTexture.loadFromFile("images/stone.png"))
+	if (!gBadCloudTexture.loadFromFile("images/badcloud.png"))
 	{
 		printf("Failed to load background texture!\n");
 		success = false;
@@ -204,7 +205,7 @@ int main(int argc, char* args[])
 				//gBGTexture.render(scrollingOffset + gBGTexture.getWidth(), 0);
 				gBGTexture.render(0, scrollingOffset + gBGTexture.getHeight());
 				//Render objects
-				
+				detectingCLOUD(BCImage, dot);
 				dot.render();
 				BCImage.render();
 				//Update screen
