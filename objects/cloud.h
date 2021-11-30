@@ -1,5 +1,5 @@
 //CSE165 oHNO3 game
-//Tyler Armstrong, Ralphilou Tatoy, Sy Loc, Vedaant Vyas
+//Tyler Armstrong, Ralphilou Tatoy, add names guys
 //Nov 17, 2021
 #ifndef CLOUD_FILE_H
 #define CLOUD_FILE_H 
@@ -81,7 +81,6 @@ BadCloud::BadCloud()
 
 	mPosY= -130 +  numCLOUDS*150;
 	mPosX = numCLOUDS *70;
-
 	directionofCLOUD = 0;
 	attackIND = 0;
 	//Initialize the velocity
@@ -115,12 +114,9 @@ void BadCloud::moveBC()
 			directionofCLOUD = 0;
 		}
 	}	
-
 }
 //void BadCloud::render()
 //{
 //	//Show the Cloud
 //	gBadCloudTexture.render(mPosX, mPosY);
 //}
-#endif 
-

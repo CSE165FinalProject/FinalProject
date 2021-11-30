@@ -123,5 +123,3 @@ void character::move()
 //	//Show the dot
 //	gDotTexture.render(mPosX, mPosY);
 //}
-
-#endif

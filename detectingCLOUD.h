@@ -38,4 +38,4 @@ void detectingCLOUD(BadCloud&BC, character& ch)
 	//	gameover = false;
 	//	//printf("%d", gameover);
 	//}
-} 
+}
