@@ -27,7 +27,7 @@ class character
 
         //Takes key presses and adjusts the dot's velocity
         void handleEvent(SDL_Event&e);
-
+		int defaultX;
         //Moves the dot
         void move();
 		//friend BadCloud;
@@ -52,7 +52,7 @@ character::character()
 	//Initialize the offsets
 	mPosX = 300;
 	mPosY = 311;
-
+	defaultX = mPosX;
 	//Initialize the velocity
 	mVelX = 0;
 	mVelY = 0;

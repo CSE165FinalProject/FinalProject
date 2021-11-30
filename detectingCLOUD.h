@@ -9,15 +9,29 @@ void detectingCLOUD(BadCloud&BC,character&ch)
 	cloudPOS = BC.getXPOS();
 	int gameover;
 	int posPlayer = ch.getXPOSC();
-	if (cloudPOS < posPlayer && cloudPOS + BC.CLOUD_WIDTH > posPlayer)
+	if (BC.attackIND == 1)
 	{
-		gameover = true; //call the death cpp
-		printf("%d", gameover);
-		//death();
+		if (cloudPOS < posPlayer && cloudPOS + BC.CLOUD_WIDTH > posPlayer)
+		{
+			gameover = true; //call the death cpp
+			printf("%d", gameover);
+			//death();
+		}
+		else
+		{
+			gameover = false;
+			//printf("%d", gameover);
+		}
 	}
-	else
-	{
-		gameover = false;
-		//printf("%d", gameover);
-	}
+	//if (cloudPOS < posPlayer && cloudPOS + BC.CLOUD_WIDTH > posPlayer)
+	//{
+	//	gameover = true; //call the death cpp
+	//	printf("%d", gameover);
+	//	//death();
+	//}
+	//else
+	//{
+	//	gameover = false;
+	//	//printf("%d", gameover);
+	//}
 }

@@ -29,15 +29,26 @@ void close();
 LTexture gDotTexture;
 LTexture gBGTexture;
 LTexture gBadCloudTexture;
+LTexture gGoodCloudTexture;
 void character::render()
 {
 	//Show the dot
 	gDotTexture.render(mPosX, mPosY);
 }
-void BadCloud::render()
+void BadCloud::render(int attack)
 {
-	//Show the Cloud
-	gBadCloudTexture.render(mPosX, mPosY);
+	//show the cloud
+	if (attack == 0)
+	{
+		//show good cloud
+		gGoodCloudTexture.render(mPosX, mPosY);
+	}
+	else
+	{
+		//show bad cloud
+		gBadCloudTexture.render(mPosX, mPosY);
+	}
+	//gbadcloudtexture.render(mposx, mposy);
 }
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -100,6 +111,7 @@ void close()
 	gDotTexture.free();
 	gBGTexture.free();
 	gBadCloudTexture.free();
+	gGoodCloudTexture.free();
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
@@ -135,6 +147,11 @@ bool loadMedia()
 		success = false;
 	}
 	//Load Attack
+	if (!gGoodCloudTexture.loadFromFile("images/goodcloud.png"))
+	{
+		printf("Failed to load background texture!\n");
+		success = false;
+	}
 
 	return success;
 }
@@ -159,12 +176,17 @@ int main(int argc, char* args[])
 			//Main loop flag
 			quit = false;
 			//timer++;
+			//printf("%d", timer);
+			time_t start, end;
+			start = clock();
 			//Event handler
 			SDL_Event e;
 
 			//Declare the class objects
 			character dot;
 			BadCloud BCImage;
+			BadCloud * GCImage = &BCImage;
+
 			//The background moving
 			int scrollingOffset = 0;
 
@@ -187,6 +209,17 @@ int main(int argc, char* args[])
 				
 				//Move the dot
 				dot.move();
+				//GCImage->moveBC();
+				//switching to good to bad vice versa
+				/*if (timer % 10 > 5)
+				{
+					GCImage->attackIND = 1;
+				}
+				else
+				{
+					BCImage.attackIND = 0;
+				}*/
+				BCImage.attack(BCImage, dot);
 				BCImage.moveBC();
 				//Scroll background
 				--scrollingOffset;
@@ -207,9 +240,16 @@ int main(int argc, char* args[])
 				//Render objects
 				detectingCLOUD(BCImage, dot);
 				dot.render();
-				BCImage.render();
+				BCImage.render(GCImage->attackIND);
 				//Update screen
 				SDL_RenderPresent(gRenderer);
+				end = clock();
+				//( (double)(newTime-oldTime)/CLOCKS_PER_SEC ) ;
+				timer = ((double)(end - start) / CLOCKS_PER_SEC);
+				
+				//printf("%d\n", timer);
+				//Attack indicator
+
 			}
 		}
 	}

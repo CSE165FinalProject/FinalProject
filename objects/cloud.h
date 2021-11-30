@@ -8,7 +8,9 @@
 //#include "sdlcreatewindow.cpp"
 //#include <createSDLWIN.h>
 //#include "imageloader.cpp"
-
+extern int timer;
+#include "objects/character.h"
+//#include "oHNO3.cpp"
 class BadCloud
 {
     public:
@@ -30,9 +32,13 @@ class BadCloud
         void moveBC();
 
         //Shows the Cloud on the screen
-        void render();
+        void render(int attack);
+
 		//friend character;
+		//Get X Position of the cloud
 		int getXPOS();
+		//Switching between good and bad cloud
+		void attack(BadCloud&Cloud,character & player);
 		//int getYPOS();
     private:
         //The X and Y offsets of the cloud
@@ -41,6 +47,18 @@ class BadCloud
         //The velocity of the Cloud
         int mVelX, mVelY;
 };
+
+void BadCloud::attack(BadCloud& Cloud, character& player)
+{
+	if (timer % 10 > 5)
+	{
+		Cloud.attackIND = 1;
+	}
+	else
+	{
+		Cloud.attackIND = 0;
+	}
+}
 int BadCloud::getXPOS()
 {
 	return mPosX;
