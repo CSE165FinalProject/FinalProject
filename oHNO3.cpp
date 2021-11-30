@@ -30,6 +30,7 @@ LTexture gDotTexture;
 LTexture gBGTexture;
 LTexture gBadCloudTexture;
 LTexture gGoodCloudTexture;
+LTexture gAcidCloudTexture;
 void character::render()
 {
 	//Show the dot
@@ -42,11 +43,17 @@ void BadCloud::render(int attack)
 	{
 		//show good cloud
 		gGoodCloudTexture.render(mPosX, mPosY);
+		//gGoodCloudTexture.render(mPosX + 300, mPosY);
 	}
-	else
+	else if(attack == 1)
 	{
 		//show bad cloud
 		gBadCloudTexture.render(mPosX, mPosY);
+		//gBadCloudTexture.render(mPosX + 300, mPosY);
+	}
+	else
+	{
+		gAcidCloudTexture.render(mPosX, mPosY);
 	}
 	//gbadcloudtexture.render(mposx, mposy);
 }
@@ -152,6 +159,11 @@ bool loadMedia()
 		printf("Failed to load background texture!\n");
 		success = false;
 	}
+	if (!gAcidCloudTexture.loadFromFile("images/acidrain.png"))
+	{
+		printf("Failed to load background texture!\n");
+		success = false;
+	}
 
 	return success;
 }
@@ -184,9 +196,10 @@ int main(int argc, char* args[])
 
 			//Declare the class objects
 			character dot;
-			BadCloud BCImage;
-			BadCloud * GCImage = &BCImage;
-
+			BadCloud BCImage[4];
+			BadCloud * GCImage = BCImage;
+			BadCloud* AcidCloud = BCImage;
+			
 			//The background moving
 			int scrollingOffset = 0;
 
@@ -219,8 +232,21 @@ int main(int argc, char* args[])
 				{
 					BCImage.attackIND = 0;
 				}*/
-				BCImage.attack(BCImage, dot);
-				BCImage.moveBC();
+				int randomCLOUDSPAWNDAMAGE;
+				srand(time(NULL));
+
+				for (int i = 0; i < 4; i++)
+				{
+
+				}
+				BCImage[0].attack(BCImage[0], dot);
+				BCImage[1].attack(BCImage[0], dot);
+				BCImage[2].attack(BCImage[0], dot);
+				BCImage[3].attack(BCImage[0], dot);
+				BCImage[0].moveBC();
+				BCImage[1].moveBC();
+				BCImage[2].moveBC();
+				BCImage[3].moveBC();
 				//Scroll background
 				--scrollingOffset;
 				if (scrollingOffset < -gBGTexture.getHeight())
@@ -234,13 +260,20 @@ int main(int argc, char* args[])
 				
 				//Render background
 				//gBGTexture.render(scrollingOffset, 0);
-				gBGTexture.render(0, scrollingOffset);
+				gBGTexture.render(0,0);
+				//gBGTexture.render(0, scrollingOffset);
 				//gBGTexture.render(scrollingOffset + gBGTexture.getWidth(), 0);
-				gBGTexture.render(0, scrollingOffset + gBGTexture.getHeight());
+				//gBGTexture.render(0, scrollingOffset + gBGTexture.getHeight());
 				//Render objects
-				detectingCLOUD(BCImage, dot);
+				detectingCLOUD(BCImage[0], dot);
+				detectingCLOUD(BCImage[1], dot);
+				detectingCLOUD(BCImage[2], dot);
+				detectingCLOUD(BCImage[3], dot);
 				dot.render();
-				BCImage.render(GCImage->attackIND);
+				BCImage[0].render(GCImage->attackIND);
+				BCImage[1].render(GCImage->attackIND);
+				BCImage[2].render(GCImage->attackIND);
+				BCImage[3].render(GCImage->attackIND);
 				//Update screen
 				SDL_RenderPresent(gRenderer);
 				end = clock();

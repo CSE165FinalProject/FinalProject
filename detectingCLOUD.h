@@ -3,15 +3,19 @@
 #include "death.cpp"
 //#include "oHNO3.cpp"
 
-void detectingCLOUD(BadCloud&BC,character&ch)
+void detectingCLOUD(BadCloud&BC, character& ch)
 {
-	int cloudPOS;
-	cloudPOS = BC.getXPOS();
+	int cloudPOSX, cloudPOSY;
+	cloudPOSX = BC.getXPOS();
+	cloudPOSY = BC.getYPOS();
 	int gameover;
-	int posPlayer = ch.getXPOSC();
-	if (BC.attackIND == 1)
+	int posPlayerX = ch.getXPOSC();
+	int posPlayerY = ch.getYPOSC();
+	//printf("%d ", posPlayerY);
+	//printf("%d", cloudPOSY);
+	if (BC.attackIND == 2)
 	{
-		if (cloudPOS < posPlayer && cloudPOS + BC.CLOUD_WIDTH > posPlayer)
+		if ((cloudPOSX < posPlayerX && cloudPOSX + BC.CLOUD_WIDTH > posPlayerX&& posPlayerY > cloudPOSY + BC.CLOUD_HEIGHT))
 		{
 			gameover = true; //call the death cpp
 			printf("%d", gameover);

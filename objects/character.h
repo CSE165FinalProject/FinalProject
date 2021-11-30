@@ -20,7 +20,7 @@ class character
         static const int DOT_HEIGHT = 20;
 
         //Maximum axis velocity of the dot
-        static const int DOT_VEL = 2;
+        static const int DOT_VEL = 10;
 
         //Initializes the variables
         character();
@@ -35,6 +35,8 @@ class character
         void render();
 		//Get the position of character in x direction
 		int getXPOSC();
+		//Get the position of character in y direction
+		int getYPOSC();
 		//void detectingCLOUDATTACK(BadCloud&ref);
     private:
         //The X and Y offsets of the dot
@@ -43,6 +45,10 @@ class character
         //The velocity of the dot
         int mVelX, mVelY;
 };
+int character::getYPOSC()
+{
+	return mPosY;
+}
 int character::getXPOSC()
 {
 	return mPosX;
