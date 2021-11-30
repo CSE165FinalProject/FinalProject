@@ -81,7 +81,6 @@ BadCloud::BadCloud()
 
 	mPosY= -130 +  numCLOUDS*150;
 	mPosX = numCLOUDS *70;
-	
 	directionofCLOUD = 0;
 	attackIND = 0;
 	//Initialize the velocity
@@ -115,11 +114,9 @@ void BadCloud::moveBC()
 			directionofCLOUD = 0;
 		}
 	}	
-	
 }
 //void BadCloud::render()
 //{
 //	//Show the Cloud
 //	gBadCloudTexture.render(mPosX, mPosY);
 //}
-#endif

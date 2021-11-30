@@ -1,3 +1,7 @@
+//CSE165 oHNO3 game
+//Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
+//Nov 17, 2021
+#include <GL/glut.h>
 
 //Using SDL, SDL_image, standard IO, vectors, and strings
 #include <SDL.h>
@@ -22,8 +26,20 @@ int timer;
 bool init();
 
 
+
 //Frees media and shuts down SDL
 void close();
+
+// int main(int argc, char **argv){
+//     glutInit(&argc, argv);
+//     glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+//     glutInitWindowSize(900, 675);
+//     glutInitWindowPosition(0, 0);  
+//     glutCreateWindow("oHNO3");
+
+
+//     return 0;
+// }
 
 //Textures
 LTexture gDotTexture;

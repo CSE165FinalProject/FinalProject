@@ -1,5 +1,5 @@
 //CSE165 oHNO3 game
-//Tyler Armstrong, Ralphilou Tatoy, add names guys
+//Tyler Armstrong, Ralphilou Tatoy, Sy Loc, Vedaant Vyas
 //Nov 17, 2021
 #ifndef CHARACTER_FILE_H
 #define CHARACTER_FILE_H
@@ -123,6 +123,3 @@ void character::move()
 //	//Show the dot
 //	gDotTexture.render(mPosX, mPosY);
 //}
- 
-#endif
-
