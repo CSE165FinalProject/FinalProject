@@ -2,23 +2,23 @@
 #include "objects/cloud.h"
 #include "death.cpp"
 //#include "oHNO3.cpp"
-
+extern int gameover;
 void detectingCLOUD(BadCloud&BC, character& ch)
 {
 	int cloudPOSX, cloudPOSY;
 	cloudPOSX = BC.getXPOS();
 	cloudPOSY = BC.getYPOS();
-	int gameover;
+	//int gameover;
 	int posPlayerX = ch.getXPOSC();
 	int posPlayerY = ch.getYPOSC();
 	//printf("%d ", posPlayerY);
 	//printf("%d", cloudPOSY);
 	if (BC.attackIND == 2)
 	{
-		if ((cloudPOSX < posPlayerX && cloudPOSX + BC.CLOUD_WIDTH > posPlayerX&& posPlayerY > cloudPOSY + BC.CLOUD_HEIGHT))
+		if ((cloudPOSX < posPlayerX && cloudPOSX + BC.CLOUD_WIDTH > posPlayerX&& posPlayerY > cloudPOSY + BC.CLOUD_HEIGHT-100))
 		{
 			gameover = true; //call the death cpp
-			printf("%d", gameover);
+			//printf("%d", gameover);
 			//death();
 		}
 		else
