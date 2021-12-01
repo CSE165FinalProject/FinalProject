@@ -6,8 +6,10 @@
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 //#include "imageloader.cpp"
-#include <SDL.h>
-#include <SDL_image.h>
+// #include <SDL/SDL.h>
+// #include <SDL/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 //#include "sdlcreatewindow.cpp"
 //#include <createSDLWIN.h>
 //#include "LTexture.h"
@@ -123,3 +125,4 @@ void character::move()
 //	//Show the dot
 //	gDotTexture.render(mPosX, mPosY);
 //}
+#endif

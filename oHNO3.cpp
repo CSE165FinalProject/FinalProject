@@ -2,10 +2,13 @@
 //Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
 //Nov 17, 2021
 #include <GL/glut.h>
-
+#ifdef _WIN32
+    #include <windows.h>
+#endif
 //Using SDL, SDL_image, standard IO, vectors, and strings
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_opengl.h>
 #include <stdio.h>
 #include <string>
 #include <time.h>

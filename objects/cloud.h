@@ -1,16 +1,15 @@
 //CSE165 oHNO3 game
 //Tyler Armstrong, Ralphilou Tatoy, add names guys
 //Nov 17, 2021
-#ifndef CLOUD_FILE_H
-#define CLOUD_FILE_H 
-#include <SDL.h>
-#include <SDL_image.h>
-
+// #include <SDL/SDL.h>
+// #include <SDL/SDL_image.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 //#include "sdlcreatewindow.cpp"
 //#include <createSDLWIN.h>
 //#include "imageloader.cpp"
 extern int timer;
-#include "objects/character.h"
+#include "character.h"
 //#include "oHNO3.cpp"
 class BadCloud
 {
