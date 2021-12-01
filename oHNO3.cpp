@@ -217,7 +217,7 @@ int main(int argc, char* args[])
 			character dot;
 			BadCloud BCImage[4];
 			BadCloud * GCImage = BCImage;
-			BadCloud* AcidCloud = BCImage;
+			///////BadCloud* AcidCloud = BCImage;
 			
 			//The background moving
 			int scrollingOffset = 0;
@@ -251,7 +251,7 @@ int main(int argc, char* args[])
 				{
 					BCImage.attackIND = 0;
 				}*/
-				int randomCLOUDSPAWNDAMAGE;
+				//////int randomCLOUDSPAWNDAMAGE;
 				srand(time(NULL));
 
 				for (int i = 0; i < 4; i++)
