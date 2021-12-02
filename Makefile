@@ -8,13 +8,13 @@ ifdef OS
    exe = oHNO3win.exe
    testexe = openglwin.exe
 
-   comp = -Wall -DUSEGLEW -lfreeglut -lglew32 -lglu32 -lopengl32 -lm -o
+   comp = -Wall -DUSEGLEW -lSDL -lSDL_mixer -lfreeglut -lglew32 -lglu32 -lSOIL -lopengl32 -lm -o
 else
    ifeq ($(shell uname), Linux)
       exe = oHNO3.exe 
 	  testexe = opengl.exe
 
-	  comp = -lglut -lGL -lGLEW -lGLU -o
+	  comp = -lglut -lGL -lGLEW -lGLU -lSDL -lSDL_mixer -lSOIL -o
    endif
 endif
 

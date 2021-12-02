@@ -1,5 +1,9 @@
-
-//Using SDL, SDL_image, standard IO, vectors, and strings
+//CSE165 oHNO3 game
+//Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
+//Nov 17, 2021
+//
+#include <gl/glut.h>
+#include <cstring>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <stdio.h>
@@ -7,36 +11,61 @@
 #include <time.h>
 #include "objects/character.h"
 #include "objects/cloud.h"
-//#include "objects/character.h"
 #include "objects/LTexture.h"
-#include "detectingCLOUD.h"
-//#include "createSDLWIN.h"
-//#include "imageloader.cpp"
+#include "detection.h"
+#include "objects/powerup.h"
+#include <SOIL/SOIL.h>
+#include <SOIL/image_dxt.h>
+#include <GL/glut.h>
+#include <SDL_ttf.h>
+#include <fstream>;
 //Screen dimension constants
+using namespace std;
 extern const int SCREEN_WIDTH = 944;
 extern const int SCREEN_HEIGHT = 500;
 bool quit;
+bool tryAgain;
+bool quitSOILEX;
 int timer;
 int gameover;
-static int timer1, timer2, timer3, timer4;
+int life;
+int powerupLifetime;
+int survivehighscore;
+int fullHEALTH;
+static int timer1, timer2, timer3, timer4, cooldowntimer;
 int timerStarted1, timerStarted2, timerStarted3, timerStarted4;
 //Starts up SDL and creates window
 bool init();
-
 
 //Frees media and shuts down SDL
 void close();
 
 //Textures
-LTexture gDotTexture;
+GLuint death;
+LTexture gPlayerTexture;
 LTexture gBGTexture;
 LTexture gBadCloudTexture;
 LTexture gGoodCloudTexture;
 LTexture gAcidCloudTexture;
+LTexture gBGTextureLater;
+LTexture gTextTexture;
+LTexture gHighScoreText;
+LTexture gPowerUp;
+LTexture gLife;
+LTexture gFHealth;
+//Font
+TTF_Font* gFont = NULL;
+
+//render
+void powerup::render()
+{
+	//show powerup
+	gPowerUp.render(mPosX, mPosY);
+}
 void character::render()
 {
-	//Show the dot
-	gDotTexture.render(mPosX, mPosY);
+	//Show the player
+	gPlayerTexture.render(mPosX, mPosY);
 }
 void BadCloud::render(int attack)
 {
@@ -60,6 +89,25 @@ void BadCloud::render(int attack)
 	}
 	//gbadcloudtexture.render(mposx, mposy);
 }
+void loadTextures() {
+	death = SOIL_load_OGL_texture
+	(
+		"go.png",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
+	);
+}
+void loadTEXTTEXTURES()
+{
+	//load text
+	//printf("%d\n", timer);
+	//gTextTexture.render(((SCREEN_WIDTH - gTextTexture.getWidth()) / 2), (SCREEN_HEIGHT - gTextTexture.getHeight()) / 2);
+	gTextTexture.render(0, 0);
+	gHighScoreText.render(SCREEN_WIDTH - gHighScoreText.getWidth(), 0);
+	gLife.render(300, 0);
+	gFHealth.render(0, 600);
+}
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
 bool init()
@@ -82,7 +130,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("Acid Rain Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());
@@ -109,268 +157,534 @@ bool init()
 					printf("SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError());
 					success = false;
 				}
+
+				//Initialize ttf
+				if (TTF_Init() == -1)
+				{
+					printf("SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError());
+					success = false;
+				}
 			}
 		}
 	}
 
 	return success;
 }
+void disDeath()
+{
+	//display death screen
+	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, death);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glBegin(GL_POLYGON);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2f(0, 0);
+
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex2f(640, 0);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(640, 480);
+
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(0, 480);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	//Display Surviving Time
+	string ST = "Surviving Time: ";
+	ST += to_string(timer);
+	int len = ST.size();
+	glRasterPos2f(300, 260);
+	for (int i = 0; i < len; i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ST[i]);
+	}
+	//Display Highest Surviving Time
+	string SHT = "Surviving Highest Time: ";
+	SHT += to_string(survivehighscore);
+	int len1 = SHT.size();
+	glRasterPos2f( 300, 240);
+	for (int i = 0; i < len1; i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, SHT[i]);
+	}
+	if (timer > survivehighscore)
+	{
+		string congratuation = "NEW HIGHSCORE!!";
+		int len2 = congratuation.size();
+		glRasterPos2f(300, 220);
+		for (int i = 0; i < len2; i++)
+		{
+			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, congratuation[i]);
+		}
+	}
+	//display text
+	/*string NG = "Press N to try again game or M to quit";
+	int len = NG.size();
+	glRasterPos2f(280 - len / 2, 220);
+
+	for (int i = 0; i < len; i++)
+	{
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, NG[i]);
+	}*/
+	glFlush();
+
+}
 void close()
 {
 	//Free loaded images
-	gDotTexture.free();
+	gPlayerTexture.free();
 	gBGTexture.free();
 	gBadCloudTexture.free();
 	gGoodCloudTexture.free();
+	gTextTexture.free();
+	gPowerUp.free();
+	
+	//Font
+	TTF_CloseFont(gFont);
+	gFont = NULL;
+	
 	//Destroy window	
 	SDL_DestroyRenderer(gRenderer);
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 	gRenderer = NULL;
-
+	
 	//Quit SDL subsystems
 	IMG_Quit();
 	SDL_Quit();
+	TTF_Quit();
+}
+void initializeSOIL()
+{
+	//initialize soil variables
+}
+void myInitSOIL()
+{
+	//startup SOIL
+	glClearColor(1.0, 4.0, 6.0, 0.0);
+	glColor3f(0.0f, 0.0f, 0.0f);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0.0, 640.0, 0.0, 480.0);
+	loadTextures();
+	initializeSOIL();
+}
+void idleFunc()
+{
+	//idle 
+	glutPostRedisplay();
 }
 bool loadMedia()
 {
 	//Loading success flag
 	bool success = true;
-
-	//Load dot texture
-	if (!gDotTexture.loadFromFile("images/dot.bmp"))
+	//Load powerup texture
+	if (!gPowerUp.loadFromFile("images/powerup.png"))
 	{
-		printf("Failed to load dot texture!\n");
+		printf("Failed to load powerup texture!\n");
 		success = false;
 	}
-
+	//Load player texture
+	if (!gPlayerTexture.loadFromFile("images/player.png"))
+	{
+		printf("Failed to load player texture!\n");
+		success = false;
+	}
+	 
 	//Load background texture
-	if (!gBGTexture.loadFromFile("images/clouds.jpg"))
+	if (!gBGTexture.loadFromFile("images/goodland.jpg"))
 	{
-		printf("Failed to load background texture!\n");
+		printf("Failed to load good background texture!\n");
 		success = false;
 	}
-	//Loud Bad Cloud
+	//Load background texture
+	if (!gBGTextureLater.loadFromFile("images/damageland.jpg"))
+	{
+		printf("Failed to load bad background texture!\n");
+		success = false;
+	}
+	//Loud Warning Cloud
 	if (!gBadCloudTexture.loadFromFile("images/badcloud.png"))
 	{
-		printf("Failed to load background texture!\n");
+		printf("Failed to load Warning cloud texture!\n");
 		success = false;
 	}
-	//Load Attack
+	//Load good cloud
 	if (!gGoodCloudTexture.loadFromFile("images/goodcloud.png"))
 	{
-		printf("Failed to load background texture!\n");
+		printf("Failed to load goodcloud texture!\n");
 		success = false;
 	}
+	//load acid cloud
 	if (!gAcidCloudTexture.loadFromFile("images/acidrain.png"))
 	{
-		printf("Failed to load background texture!\n");
+		printf("Failed to load acid rain texture!\n");
 		success = false;
 	}
-
-	return success;
-}
-
-int main(int argc, char* args[])
-{
-	//timer = 0;
-	//Start up SDL and create window
-	if (!init())
+	
+	//load font
+	gFont = TTF_OpenFont("images/gameFONT.ttf",20);
+	if (gFont == NULL)
 	{
-		printf("Failed to initialize!\n");
+		printf("Failed to load font: %s\n", TTF_GetError());
+		success = false;
+
 	}
 	else
 	{
-		//Load media
-		if (!loadMedia())
+		SDL_Color textcolor = { 0,0,0 };
+		string s = to_string(timer);
+		if (!gTextTexture.loadFromRenderedText(s, textcolor))
 		{
-			printf("Failed to load media!\n");
+			printf("Failed to render game timer");
+			success = false;
+		}
+	}
+	
+	return success;
+}
+//void glutLeaveMainLoop(void);
+void keyFunc(unsigned char k, int x, int y)
+{
+	//end screen keyboard input
+	if (k == 'n' || k == 'N')
+	{
+		//printf("Hello");
+		/*initializeSOIL();
+		glutPostRedisplay();*/
+		tryAgain = false;
+		printf("%d", tryAgain);
+		quitSOILEX = true;
+		//init();
+		
+	}
+	else if (k == 'm' || k == 'M')
+	{
+		tryAgain = true;
+		quitSOILEX = true;
+	}
+}
+
+int main(int argc, char* argv[])
+{
+	//timer = 0;
+	tryAgain = false;
+	powerupLifetime = 0;
+	//Start up SDL and create window
+	while (!tryAgain)
+	{
+		if (!init())
+		{
+			printf("Failed to initialize!\n");
 		}
 		else
 		{
-			//Main loop flag
-			quit = false;
-			//timer++;
-			//printf("%d", timer);
-			time_t start, end;
-			time_t start1= 0, end1=0;
-			time_t start2 = 0, end2=0;
-			time_t start3 = 0, end3=0;
-			time_t start4= 0, end4=0;
-			start = clock();
-			//Event handler
-			SDL_Event e;
-
-			//Declare the class objects
-			character dot;
-			BadCloud BCImage[4];
-			BadCloud * GCImage = BCImage;
-			BadCloud* AcidCloud = BCImage;
-			
-			//The background moving
-			int scrollingOffset = 0;
-
-			//While application is running
-			while (!quit)
+			//Load media
+			if (!loadMedia())
 			{
-				//Handle events on queue
-				while (SDL_PollEvent(&e) != 0)
+				printf("Failed to load media!\n");
+			}
+			else
+			{
+				//Main loop flag
+				quit = false;
+				//getting Highscore
+				ifstream fgetdata("data/survivetime.txt");
+				fgetdata >> survivehighscore;
+				fgetdata.close();
+				//Initializing time for diff clouds
+				time_t start, end;
+				time_t start1 = 0, end1 = 0;
+				time_t start2 = 0, end2 = 0;
+				time_t start3 = 0, end3 = 0;
+				time_t start4 = 0, end4 = 0;
+				start = clock();
+				
+				//Event handler
+				SDL_Event e;
+
+				//Declare the class objects
+				character player;
+				BadCloud BCImage[4];
+				BadCloud* GCImage = BCImage;
+				BadCloud* AcidCloud = BCImage;
+				powerup powerups;
+				//The background moving
+				int scrollingOffset = 0;
+
+				//While application is running
+				while (!quit)
 				{
-					//User requests quit
-					if (e.type == SDL_QUIT)
+					//Handle events on queue
+					while (SDL_PollEvent(&e) != 0)
 					{
-						quit = true;
+						//User requests quit
+						if (e.type == SDL_QUIT)
+						{
+							quit = true;
+						}
+
+						//Handle input for the player
+						player.handleEvent(e);
+						//BCImage.movementBADCLOUD();
 					}
 
-					//Handle input for the dot
-					dot.handleEvent(e);
-					//BCImage.movementBADCLOUD();
-				}
-				
-				//Move the dot
-				dot.move();
-				//GCImage->moveBC();
-				//switching to good to bad vice versa
-				/*if (timer % 10 > 5)
-				{
-					GCImage->attackIND = 1;
-				}
-				else
-				{
-					BCImage.attackIND = 0;
-				}*/
-				
-				//for (int i = 0; i < 4; i++)
-				//{
-				//	//randomCLOUDSPAWNDAMAGE = rand() % 10 + 1;
-				//	printf("%d", randomCLOUDSPAWNDAMAGE);
-				//	if (randomCLOUDSPAWNDAMAGE < 5)
-				//	{
-				//		BCImage[i].attack(BCImage[i], dot);
-				//	}
-				//}
-				int randomCLOUDSPAWNDAMAGE = 0;
-				srand(time(NULL));
-				randomCLOUDSPAWNDAMAGE = rand() % 100 + 1;
-				int choosing;
-				choosing = randomCLOUDSPAWNDAMAGE;
-				if (timer %20 <= 5&& timerStarted1 == 0)
-				{
-					start1 = clock();
-					timerStarted1 = 1;
-					//BCImage[0].attack(BCImage[0], dot);
-				}
-				else if (timer % 20 > 5 && timer % 20 <= 10 && timerStarted2 == 0)
-				{
-					start2 = clock();
-					timerStarted2 = 1;
-					//BCImage[1].attack(BCImage[1], dot);
-				}
-				else if (timer % 20 > 10 && timer % 20 <= 15 && timerStarted3 == 0)
-				{
-					start3 = clock();
-					timerStarted3 = 1;
-					//BCImage[2].attack(BCImage[2], dot);
-				}
-				else if (timer % 20 > 15 && timer % 20 <= 20 && timerStarted4 == 0)
-				{
-					start4 = clock();
-					timerStarted4 = 1;
-					//BCImage[3].attack(BCImage[3], dot);
-				}
-				//printf("%d\n", timerStarted1);
-				//BCImage[0].attack(BCImage[0], dot);
-				//BCImage[1].attack(BCImage[1], dot);
-				//BCImage[2].attack(BCImage[2], dot);
-				//BCImage[3].attack(BCImage[3], dot);
-				BCImage[0].moveBC();
-				BCImage[1].moveBC();
-				BCImage[2].moveBC();
-				BCImage[3].moveBC();
-				//Scroll background
-				--scrollingOffset;
-				if (scrollingOffset < -gBGTexture.getHeight())
-				{
-					scrollingOffset = 0;
-				}
+					//Move the Player
+					player.move();
 
-				//Clear screen
-				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-				SDL_RenderClear(gRenderer);
-				
-				//Render background
-				//gBGTexture.render(scrollingOffset, 0);
-				gBGTexture.render(0,0);
-				//gBGTexture.render(0, scrollingOffset);
-				//gBGTexture.render(scrollingOffset + gBGTexture.getWidth(), 0);
-				//gBGTexture.render(0, scrollingOffset + gBGTexture.getHeight());
-				//Render objects
-				detectingCLOUD(BCImage[0], dot);
-				detectingCLOUD(BCImage[1], dot);
-				detectingCLOUD(BCImage[2], dot);
-				detectingCLOUD(BCImage[3], dot);
-				dot.render();
-			
-				/*if (choosing > 0 && choosing <= 25)
-				{
-					BCImage[0].render(BCImage[0].attackIND);
+
+					//Start Timer at diff. instances for diff. clouds
+					if (timer % 20 <= 5 && timerStarted1 == 0)
+					{
+						start1 = clock();
+						timerStarted1 = 1;
+
+					}
+					else if (timer % 20 > 5 && timer % 20 <= 10 && timerStarted2 == 0)
+					{
+						start2 = clock();
+						timerStarted2 = 1;
+					}
+					else if (timer % 20 > 10 && timer % 20 <= 15 && timerStarted3 == 0)
+					{
+						start3 = clock();
+						timerStarted3 = 1;
+
+					}
+					else if (timer % 20 > 15 && timer % 20 <= 20 && timerStarted4 == 0)
+					{
+						start4 = clock();
+						timerStarted4 = 1;
+
+					}
+
+					//Cloud Move
+					BCImage[0].moveBC();
+					BCImage[1].moveBC();
+					BCImage[2].moveBC();
+					BCImage[3].moveBC();
+
+					//Scroll background
+					/*--scrollingOffset;
+					if (scrollingOffset < -gBGTexture.getHeight())
+					{
+						scrollingOffset = 0;
+					}*/
+
+					//powerup
+					//powerups.render();
+					
+					
+
+					//Clear screen
+					SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
+					SDL_RenderClear(gRenderer);
+					//gPowerUp.render(100, 100);
+					//Render background
+					//gBGTexture.render(scrollingOffset, 0);
+					//gBGTexture.render(0, 0);
+					//change background after acid damage
+					if (timer > 50)
+					{
+						gBGTextureLater.render(0, 0);
+					}
+					else
+					{
+						gBGTexture.render(0, 0);
+					}
+					//gPowerUp.render(100, 100);
+					//gBGTexture.render(0, scrollingOffset);
+					//gBGTexture.render(scrollingOffset + gBGTexture.getWidth(), 0);
+					//gBGTexture.render(0, scrollingOffset + gBGTexture.getHeight());
+
+					//Detecting objects
+					detectingCLOUD(BCImage[0], player);
+					detectingCLOUD(BCImage[1], player);
+					detectingCLOUD(BCImage[2], player);
+					detectingCLOUD(BCImage[3], player);
+					
+					//Render objects
+					player.render();
+					/*BCImage[0].render(BCImage[0].attackIND);
 					BCImage[1].render(BCImage[1].attackIND);
 					BCImage[2].render(BCImage[2].attackIND);
-				}*/
-				BCImage[0].render(BCImage[0].attackIND);
-				BCImage[1].render(BCImage[1].attackIND);
-				BCImage[2].render(BCImage[2].attackIND);
-				BCImage[3].render(BCImage[3].attackIND);
-				//Update screen
-				SDL_RenderPresent(gRenderer);
-				end = clock();
-				if (timerStarted1 == 1)
-				{
-					end1 = clock();
-					BCImage[0].attack(BCImage[0], dot);
-				}
-				if (timerStarted2 == 1)
-				{
-					end2 = clock();
-					BCImage[1].attack(BCImage[1], dot);
+					BCImage[3].render(BCImage[3].attackIND);*/
+					powerups.spawn();
+					powerups.render();
+					//if (powerupLifetime == 0 && life < 50)
+					//{
+					//	powerups.spawn();
+					//	powerups.render();
+					//	//powerups.render();
+					//	powerupLifetime = 1;
+					//	//printf("hello");
+					//}
+					if (timerStarted1 == 1)
+					{
+						end1 = clock();
+						BCImage[0].attack(BCImage[0], player);
+						BCImage[0].render(BCImage[0].attackIND);
+					}
+					if (timerStarted2 == 1)
+					{
+						end2 = clock();
+						BCImage[1].attack(BCImage[1], player);
+						BCImage[1].render(BCImage[1].attackIND);
+
+					}
+					if (timerStarted3 == 1)
+					{
+						end3 = clock();
+						BCImage[2].attack(BCImage[2], player);
+						BCImage[2].render(BCImage[2].attackIND);
+					}
+					if (timerStarted4 == 1)
+					{
+						end4 = clock();
+						BCImage[3].attack(BCImage[3], player);
+						BCImage[3].render(BCImage[3].attackIND);
+					}
+					//}
+					if (powerupLifetime == 1)
+					{
+						powerups.render();
+						detectionPOWERUP(powerups, player);
+						//printf("rendering");
+					}
 					
+					//gPowerUp.render(300,200 );
+					detectionPOWERUP(powerups, player);
+					if (life > 0)
+					{
+						
+						powerupLifetime = 0;
+					}
+					//show timer
+					loadTEXTTEXTURES();
+					//update screen
+					SDL_RenderPresent(gRenderer);
+
+					//Get time
+					end = clock();
+					/*if (timerStarted1 == 1)
+					{
+						end1 = clock();
+						BCImage[0].attack(BCImage[0], player);
+					}
+					if (timerStarted2 == 1)
+					{
+						end2 = clock();
+						BCImage[1].attack(BCImage[1], player);
+
+					}
+					if (timerStarted3 == 1)
+					{
+						end3 = clock();
+						BCImage[2].attack(BCImage[2], player);
+					}
+					if (timerStarted4 == 1)
+					{
+						end4 = clock();
+						BCImage[3].attack(BCImage[3], player);
+					}*/
+					//Random speed boost initalizer
+					int randomSpeedBoost;
+					srand(time(NULL));
+					randomSpeedBoost = rand() % 10 + 0;
+
+					//calculate time
+					timer = ((double)(end - start) / CLOCKS_PER_SEC);
+					////If timer is at time, reset the randomizing time of each cloud change
+					//if (timer % 50 == 0)
+					//{
+					//	timer = 0;
+					//}
+					timer1 = ((double)(end1 - start1) / CLOCKS_PER_SEC) + (randomSpeedBoost *0.2);
+					timer2 = ((double)(end2 - start2) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
+					timer3 = ((double)(end3 - start3) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
+					timer4 = ((double)(end4 - start4) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
+					//Show time Surviving
+					SDL_Color textcolor = { 255,0,0 };
+					string s = to_string(timer);
+					s += "seconds";
+					if (!gTextTexture.loadFromRenderedText(s, textcolor))
+					{
+						printf("Failed to render game timer");
+					}
+					//Show surviving high score
+					string high = "Your Surviving Highest Time: " + to_string(survivehighscore);
+					if (!gHighScoreText.loadFromRenderedText(high, textcolor))
+					{
+						printf("Failed to render game timer");
+					}
+					//Show Life Force
+					string lifeFORCE = "Life: " + to_string(life);
+					if (!gLife.loadFromRenderedText(lifeFORCE, textcolor))
+					{
+						printf("Failed to render game timer");
+					}
+					if (fullHEALTH == 1)
+					{
+						string fullHealth = "FULL HEALTH!!!";
+						if (!gFHealth.loadFromRenderedText(fullHealth, textcolor))
+						{
+							printf("Failed to render game timer");
+						}
+					}
+					
+					//GameOver
+					if (gameover == 1)
+					{
+						
+						
+						if (survivehighscore < timer)
+						{
+							ofstream finputscore("data/survivetime.txt");
+							finputscore << timer << "\n";
+						}
+						quit = true;
+					}
+					
+
+			
+
+
 				}
-				if (timerStarted3 == 1)
-				{
-					end3 = clock();
-					BCImage[2].attack(BCImage[2], dot);
-				}
-				if (timerStarted4 == 1)
-				{
-					end4 = clock();
-					BCImage[3].attack(BCImage[3], dot);
-				}
-				
-				/*end1 = clock();
-				end2 = clock();
-				end3 = clock();
-				end4 = clock();*/
-				//( (double)(newTime-oldTime)/CLOCKS_PER_SEC ) ;
-				timer = ((double)(end - start) / CLOCKS_PER_SEC);
-				timer1 = ((double)(end1 - start1) / CLOCKS_PER_SEC);
-				timer2 = ((double)(end2 - start2) / CLOCKS_PER_SEC);
-				timer3 = ((double)(end3 - start3) / CLOCKS_PER_SEC);
-				timer4 = ((double)(end4 - start4) / CLOCKS_PER_SEC);
-				if (gameover == 1)
-				{
-					quit = true;
-				}
-				//printf("%d\n", gameover);
-				//Attack indicator
+
 
 			}
-			
+
 		}
+		//Close SDL stuff
+		
+		
+		//Using Soil to view exit window
+		quitSOILEX = 0;
+		
+		
+		glutInit(&argc, argv);
+		glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+		glutInitWindowSize(900, 675);
+		glutInitWindowPosition(0, 0);
+		glutCreateWindow("Game Over Screen");
+		glutDisplayFunc(disDeath);
+		glutIdleFunc(idleFunc);
+		glutKeyboardFunc(keyFunc);
+		myInitSOIL();
+		glutMainLoop();
+		//glutDestroyWindow(1);
+			
+		
 		
 	}
-
-	//Free resources and close SDL
+	//Close SDL stuff
 	close();
-
 	return 0;
 }
+

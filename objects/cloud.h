@@ -17,11 +17,11 @@ class BadCloud
 {
     public:
         //The dimensions of the Cloud
-        static const int CLOUD_WIDTH = 200;
+        static const int CLOUD_WIDTH = 190;
         static const int CLOUD_HEIGHT = 160;
 
         //Maximum axis velocity of the Cloud
-        static const int CLOUD_VEL = 6;
+		static int CLOUD_VEL;
         //Motion of the cloud left to right and vice version
         //void movementBADCLOUD();
         //Initializes the variables
@@ -61,9 +61,10 @@ int BadCloud::getYPOS()
 }
 int BadCloud::numCLOUDS = 0;
 int BadCloud::numAttack = 0;
+int BadCloud::CLOUD_VEL = 6;
 void BadCloud::attack(BadCloud& Cloud, character& player)
 {
-	int startIT;
+	//int startIT;
 	static double leaveONEgood = 3;
 	
 	//printf("%d\n", randomCLOUDSPAWNDAMAGE);
@@ -72,18 +73,13 @@ void BadCloud::attack(BadCloud& Cloud, character& player)
 	//printf("%d\n", timer1);
 	if (timerStarted1 == 1&& Cloud.id == 0)
 	{
-		if (timer1 % 20 > 10 && timer1 % 20 < 18)
+		if (timer1 % 20 > 12 && timer1 % 20 < 16)
 		{
-			/*if (randomCLOUDSPAWNDAMAGE  > 50 && leaveONEgood > 1 )
-			{
-				printf("%d\n", leaveONEgood);
-				leaveONEgood--;
-				Cloud.attackIND = 1;
-			}*/
+			
 			Cloud.attackIND = 1;
-			//Cloud.attackIND = 1;
+			
 		}
-		else if (timer1 % 20 >= 18 && timer1 % 20 < 20) {
+		else if (timer1 % 20 >= 16 && timer1 % 20 < 20) {
 			if (Cloud.attackIND == 1)
 			{
 				Cloud.attackIND = 2;
@@ -99,18 +95,13 @@ void BadCloud::attack(BadCloud& Cloud, character& player)
 	}
 	if (timerStarted2 == 1&&Cloud.id == 1)
 	{
-		if (timer2 % 20 > 10 && timer2 % 20 < 18)
+		if (timer2 % 20 > 12 && timer2 % 20 < 16)
 		{
-			/*if (randomCLOUDSPAWNDAMAGE  > 50 && leaveONEgood > 1 )
-			{
-				printf("%d\n", leaveONEgood);
-				leaveONEgood--;
-				Cloud.attackIND = 1;
-			}*/
+			
 			Cloud.attackIND = 1;
-			//Cloud.attackIND = 1;
+			
 		}
-		else if (timer2 % 20 >= 18 && timer2 % 20 < 20) {
+		else if (timer2 % 20 >= 16 && timer2 % 20 < 20) {
 			if (Cloud.attackIND == 1)
 			{
 				Cloud.attackIND = 2;
@@ -127,18 +118,13 @@ void BadCloud::attack(BadCloud& Cloud, character& player)
 	
 	if (timerStarted3 == 1 && Cloud.id == 2)
 	{
-		if (timer3 % 20 > 10 && timer3 % 20 < 18)
+		if (timer3 % 20 > 12 && timer3 % 20 < 16)
 		{
-			/*if (randomCLOUDSPAWNDAMAGE  > 50 && leaveONEgood > 1 )
-			{
-				printf("%d\n", leaveONEgood);
-				leaveONEgood--;
-				Cloud.attackIND = 1;
-			}*/
+			
 			Cloud.attackIND = 1;
-			//Cloud.attackIND = 1;
+			
 		}
-		else if (timer3 % 20 >= 18 && timer3 % 20 < 20) {
+		else if (timer3 % 20 >= 16 && timer3 % 20 < 20) {
 			if (Cloud.attackIND == 1)
 			{
 				Cloud.attackIND = 2;
@@ -148,25 +134,23 @@ void BadCloud::attack(BadCloud& Cloud, character& player)
 		}
 		else
 		{
-
-			Cloud.attackIND = 0;
+			if (Cloud.attackIND != 1)
+			{
+				Cloud.attackIND = 0;
+			}
+			//Cloud.attackIND = 0;
 		}
 
 	}
 	if (timerStarted4 == 1 && Cloud.id == 3)
 	{
-		if (timer4 % 20 > 10 && timer4 % 20 < 18)
+		if (timer4 % 20 > 12 && timer4 % 20 < 16)
 		{
-			/*if (randomCLOUDSPAWNDAMAGE  > 50 && leaveONEgood > 1 )
-			{
-				printf("%d\n", leaveONEgood);
-				leaveONEgood--;
-				Cloud.attackIND = 1;
-			}*/
+			
 			Cloud.attackIND = 1;
-			//Cloud.attackIND = 1;
+			
 		}
-		else if (timer4 % 20 >= 18 && timer4 % 20 < 20) {
+		else if (timer4 % 20 >= 16 && timer4 % 20 < 20) {
 			if (Cloud.attackIND == 1)
 			{
 				Cloud.attackIND = 2;
@@ -182,30 +166,7 @@ void BadCloud::attack(BadCloud& Cloud, character& player)
 	}
 	
 	
-	//if (timer % 20 > 15 && timer %20<20)
-	//{
-	//	/*if (randomCLOUDSPAWNDAMAGE  > 50 && leaveONEgood > 1 )
-	//	{
-	//		printf("%d\n", leaveONEgood);
-	//		leaveONEgood--;
-	//		Cloud.attackIND = 1;
-	//	}*/
-	//	Cloud.attackIND = 1;
-	//	//Cloud.attackIND = 1;
-	//}
-	//else if(timer%20 >=15 && timer%20 < 20) {
-	//	if (Cloud.attackIND == 1)
-	//	{
-	//		Cloud.attackIND = 2;
-	//	}
-	//	//leaveONEgood = 0;
-	//	//Cloud.attackIND = 2;
-	//}
-	//else
-	//{
-	//	timerStarted1 =0, timerStarted2 =0, timerStarted3 =0, timerStarted4 =0;
-	//	Cloud.attackIND = 0;
-	//}
+	
 }
 int BadCloud::getXPOS()
 {
@@ -213,31 +174,42 @@ int BadCloud::getXPOS()
 }
 BadCloud::BadCloud()
 {
-	//Initialize the offsets
-	//numCLOUDS = 0;
-
+	//initialize position
 	mPosY= -140 +  numCLOUDS*150;
-	mPosX = numCLOUDS *100;
-	
+	mPosX = numCLOUDS *150;
+	/*mPosY = 0;
+	mPosX = 0;*/
+	//direction of cloud
 	directionofCLOUD = 0;
+
+	//attack
 	attackIND = 0;
+
 	//Initialize the velocity
 	mVelX = CLOUD_VEL;
 	mVelY = 0;
+
 	//Number of Attacking Clouds
 	//numAttack = 0;
+	
 	//Id of cloud
 	id = numCLOUDS;
+
+	//count the clouds present
 	numCLOUDS++;
 }
 void BadCloud::moveBC()
 {
-		//move to the right
+	//move to the right
+	if (timer % 2 == 0)
+	{
+		CLOUD_VEL += 10;
+	}
 	if (directionofCLOUD == 0)
 	{
 		mPosX += mVelX;
 
-		//If the dot went too far to the left or right
+		//If the Cloud went too far to the left or right
 		if (mPosX + CLOUD_WIDTH > SCREEN_WIDTH)
 		{
 			//Move back
@@ -256,11 +228,6 @@ void BadCloud::moveBC()
 			directionofCLOUD = 0;
 		}
 	}	
-	
 }
-//void BadCloud::render()
-//{
-//	//Show the Cloud
-//	gBadCloudTexture.render(mPosX, mPosY);
-//}
+
 #endif

@@ -3,8 +3,13 @@
 #include "character.h"
 #include <string>
 #include <SDL_image.h>
-#include <SDL.h>
+#include <SOIL/SOIL.h>
+#include <SOIL/image_dxt.h>
+#include <SDL_ttf.h>
+extern TTF_Font* gFont;
+
 SDL_Renderer* gRenderer = NULL;
+
 class LTexture
 {
 	public:
@@ -17,10 +22,10 @@ class LTexture
 		//Loads image at specified path
 		bool loadFromFile(std::string path);
 
-	#if defined(SDL_TTF_MAJOR_VERSION)
+	//#if defined(SDL_TTF_MAJOR_VERSION)
 		//Creates image from font string
 		bool loadFromRenderedText(std::string textureText, SDL_Color textColor);
-	#endif
+	//#endif
 
 		//Deallocates texture
 		void free();
@@ -71,6 +76,7 @@ bool LTexture::loadFromFile(std::string path)
 
 	//Load image at specified path
 	SDL_Surface* loadedSurface = IMG_Load(path.c_str());
+	
 	if (loadedSurface == NULL)
 	{
 		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
@@ -101,13 +107,14 @@ bool LTexture::loadFromFile(std::string path)
 	mTexture = newTexture;
 	return mTexture != NULL;
 }
-#if defined(SDL_TTF_MAJOR_VERSION)
+//#if defined(SDL_TTF_MAJOR_VERSION)
 bool LTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor)
 {
 	//Get rid of preexisting texture
 	free();
 
 	//Render text surface
+	//SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
 	SDL_Surface* textSurface = TTF_RenderText_Solid(gFont, textureText.c_str(), textColor);
 	if (textSurface != NULL)
 	{
@@ -136,7 +143,7 @@ bool LTexture::loadFromRenderedText(std::string textureText, SDL_Color textColor
 	//Return success
 	return mTexture != NULL;
 }
-#endif
+//#endif
 void LTexture::free()
 {
 	//Free texture if it exists
