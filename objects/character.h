@@ -14,8 +14,8 @@ class character
 {
     public:
         //The dimensions of the player
-        static const int PLAYER_WIDTH = 100;
-        static const int PLAYER_HEIGHT = 100;
+        static const int PLAYER_WIDTH = 80;
+        static const int PLAYER_HEIGHT = 80;
 
         //Maximum axis velocity of the dot
         static const int PLAYER_VEL = 10;
@@ -96,7 +96,7 @@ void character::move()
 	mPosX += mVelX;
 
 	//If the dot went too far to the left or right
-	if ((mPosX < 0) || (mPosX + PLAYER_WIDTH > SCREEN_WIDTH))
+	if ((mPosX+10 < 0) || (mPosX+10 + PLAYER_WIDTH > SCREEN_WIDTH))
 	{
 		//Move back
 		mPosX -= mVelX;
@@ -106,7 +106,7 @@ void character::move()
 	mPosY += mVelY;
 
 	//If the dot went too far up or down
-	if ((mPosY < 0) || (mPosY + PLAYER_HEIGHT > SCREEN_HEIGHT))
+	if ((mPosY+10 < 0) || (mPosY + PLAYER_HEIGHT > SCREEN_HEIGHT))
 	{
 		//Move back
 		mPosY -= mVelY;

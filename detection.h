@@ -64,7 +64,7 @@ void detectionPOWERUP(powerup&pu, character&player)
 	int ypospl = player.getYPOSC();
 	//printf(" %d %d |  %d %d\n", xpospl, ypospl, xpospu,ypospu);
 	
-	if ((ypospl > ypospu && ypospl < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH))
+	if ((ypospl+20 > ypospu && ypospl+20 < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH))
 	{
 			if (life < 20)
 			{

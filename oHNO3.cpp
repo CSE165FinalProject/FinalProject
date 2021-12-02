@@ -170,6 +170,7 @@ bool init()
 
 	return success;
 }
+//Display death screen using glut and soil
 void disDeath()
 {
 	//display death screen
@@ -195,6 +196,7 @@ void disDeath()
 	glVertex2f(0, 480);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
+
 	//Display Surviving Time
 	string ST = "Surviving Time: ";
 	ST += to_string(timer);
@@ -204,6 +206,7 @@ void disDeath()
 	{
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ST[i]);
 	}
+
 	//Display Highest Surviving Time
 	string SHT = "Surviving Highest Time: ";
 	SHT += to_string(survivehighscore);
@@ -215,6 +218,7 @@ void disDeath()
 	}
 	if (timer > survivehighscore)
 	{
+		//display acknowledgement of new high score
 		string congratuation = "NEW HIGHSCORE!!";
 		int len2 = congratuation.size();
 		glRasterPos2f(300, 220);
@@ -260,10 +264,12 @@ void close()
 	SDL_Quit();
 	TTF_Quit();
 }
+//if you want to initialize something in soil
 void initializeSOIL()
 {
 	//initialize soil variables
 }
+//Soil init function
 void myInitSOIL()
 {
 	//startup SOIL
@@ -275,6 +281,7 @@ void myInitSOIL()
 	loadTextures();
 	initializeSOIL();
 }
+//Glut Idle
 void idleFunc()
 {
 	//idle 
@@ -477,19 +484,15 @@ int main(int argc, char* argv[])
 						scrollingOffset = 0;
 					}*/
 
-					//powerup
-					//powerups.render();
+					
 					
 					
 
 					//Clear screen
 					SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 					SDL_RenderClear(gRenderer);
-					//gPowerUp.render(100, 100);
-					//Render background
-					//gBGTexture.render(scrollingOffset, 0);
-					//gBGTexture.render(0, 0);
-					//change background after acid damage
+					
+					//Change Background overtime
 					if (timer > 50)
 					{
 						gBGTextureLater.render(0, 0);
@@ -515,16 +518,13 @@ int main(int argc, char* argv[])
 					BCImage[1].render(BCImage[1].attackIND);
 					BCImage[2].render(BCImage[2].attackIND);
 					BCImage[3].render(BCImage[3].attackIND);*/
+
+					//Pick random coordinates for powerup
 					powerups.spawn();
+					//Render powerups
 					powerups.render();
-					//if (powerupLifetime == 0 && life < 50)
-					//{
-					//	powerups.spawn();
-					//	powerups.render();
-					//	//powerups.render();
-					//	powerupLifetime = 1;
-					//	//printf("hello");
-					//}
+					
+					//if timer started for each cloud, render and start attacking phase
 					if (timerStarted1 == 1)
 					{
 						end1 = clock();
@@ -550,49 +550,22 @@ int main(int argc, char* argv[])
 						BCImage[3].attack(BCImage[3], player);
 						BCImage[3].render(BCImage[3].attackIND);
 					}
-					//}
-					if (powerupLifetime == 1)
-					{
-						powerups.render();
-						detectionPOWERUP(powerups, player);
-						//printf("rendering");
-					}
 					
-					//gPowerUp.render(300,200 );
+					
+
+					//Detect powerup if player is near
 					detectionPOWERUP(powerups, player);
-					if (life > 0)
-					{
-						
-						powerupLifetime = 0;
-					}
+					
 					//show timer
+					//load text, health, timer, high timer score
 					loadTEXTTEXTURES();
+
 					//update screen
 					SDL_RenderPresent(gRenderer);
 
 					//Get time
 					end = clock();
-					/*if (timerStarted1 == 1)
-					{
-						end1 = clock();
-						BCImage[0].attack(BCImage[0], player);
-					}
-					if (timerStarted2 == 1)
-					{
-						end2 = clock();
-						BCImage[1].attack(BCImage[1], player);
-
-					}
-					if (timerStarted3 == 1)
-					{
-						end3 = clock();
-						BCImage[2].attack(BCImage[2], player);
-					}
-					if (timerStarted4 == 1)
-					{
-						end4 = clock();
-						BCImage[3].attack(BCImage[3], player);
-					}*/
+					
 					//Random speed boost initalizer
 					int randomSpeedBoost;
 					srand(time(NULL));
@@ -600,15 +573,11 @@ int main(int argc, char* argv[])
 
 					//calculate time
 					timer = ((double)(end - start) / CLOCKS_PER_SEC);
-					////If timer is at time, reset the randomizing time of each cloud change
-					//if (timer % 50 == 0)
-					//{
-					//	timer = 0;
-					//}
 					timer1 = ((double)(end1 - start1) / CLOCKS_PER_SEC) + (randomSpeedBoost *0.2);
 					timer2 = ((double)(end2 - start2) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
 					timer3 = ((double)(end3 - start3) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
 					timer4 = ((double)(end4 - start4) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
+					
 					//Show time Surviving
 					SDL_Color textcolor = { 255,0,0 };
 					string s = to_string(timer);
