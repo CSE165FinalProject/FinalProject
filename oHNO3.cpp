@@ -1,14 +1,11 @@
 //CSE165 oHNO3 game
 //Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
 //Nov 17, 2021
-#include <GL/glut.h>
-#ifdef _WIN32
-    #include <windows.h>
-#endif
-//Using SDL, SDL_image, standard IO, vectors, and strings
+//
+#include <gl/glut.h>
+#include <cstring>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_opengl.h>
 #include <stdio.h>
 #include <string>
 #include <time.h>
@@ -16,12 +13,12 @@
 #include "objects/cloud.h"
 #include "objects/LTexture.h"
 #include "detection.h"
-#include "objects/powerup.h"
 #include <SOIL/SOIL.h>
 #include <SOIL/image_dxt.h>
 #include <GL/glut.h>
-#include <SDL_ttf.h>
-#include <fstream>;
+#include <SDL2/SDL_ttf.h>
+#include <fstream>
+#include "global.h"
 //Screen dimension constants
 using namespace std;
 extern const int SCREEN_WIDTH = 944;
@@ -35,7 +32,7 @@ int life;
 int powerupLifetime;
 int survivehighscore;
 int fullHEALTH;
-static int timer1, timer2, timer3, timer4, cooldowntimer;
+int timer1, timer2, timer3, timer4, cooldowntimer;
 int timerStarted1, timerStarted2, timerStarted3, timerStarted4;
 //Starts up SDL and creates window
 bool init();
@@ -95,7 +92,7 @@ void BadCloud::render(int attack)
 void loadTextures() {
 	death = SOIL_load_OGL_texture
 	(
-		"go.png",
+		"images/go.png",
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
@@ -395,30 +392,8 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
-
 			//Load media
 			if (!loadMedia())
-
-			//Main loop flag
-			quit = false;
-			//timer++;
-			//printf("%d", timer);
-			time_t start, end;
-			start = clock();
-			//Event handler
-			SDL_Event e;
-
-			//Declare the class objects
-			character dot;
-			BadCloud BCImage[4];
-			BadCloud * GCImage = BCImage;
-			///////BadCloud* AcidCloud = BCImage;
-			
-			//The background moving
-			int scrollingOffset = 0;
-
-			//While application is running
-			while (!quit)
 			{
 				printf("Failed to load media!\n");
 			}
@@ -444,11 +419,11 @@ int main(int argc, char* argv[])
 				//Declare the class objects
 				character player;
 				BadCloud BCImage[4];
-				BadCloud* GCImage = BCImage;
-				BadCloud* AcidCloud = BCImage;
+				//BadCloud* GCImage = BCImage;
+				//BadCloud* AcidCloud = BCImage;
 				powerup powerups;
 				//The background moving
-				int scrollingOffset = 0;
+				//int scrollingOffset = 0;
 
 				//While application is running
 				while (!quit)
@@ -645,28 +620,8 @@ int main(int argc, char* argv[])
 						quit = true;
 					}
 					
+
 			
-
-					//Handle input for the dot
-					dot.handleEvent(e);
-					//BCImage.movementBADCLOUD();
-				}
-				
-				//Move the dot
-				dot.move();
-				//GCImage->moveBC();
-				//switching to good to bad vice versa
-				/*if (timer % 10 > 5)
-				{
-					GCImage->attackIND = 1;
-				}
-				else
-				{
-					BCImage.attackIND = 0;
-				}*/
-				//////int randomCLOUDSPAWNDAMAGE;
-				srand(time(NULL));
-
 
 
 				}
@@ -676,7 +631,8 @@ int main(int argc, char* argv[])
 
 		}
 		//Close SDL stuff
-		
+		//Close SDL stuff
+		close();
 		
 		//Using Soil to view exit window
 		quitSOILEX = 0;
@@ -697,8 +653,7 @@ int main(int argc, char* argv[])
 		
 		
 	}
-	//Close SDL stuff
-	close();
+	;
 	return 0;
 }
 

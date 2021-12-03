@@ -8,7 +8,7 @@ ifdef OS
    exe = oHNO3win.exe
    testexe = openglwin.exe
 
-   comp = -Wall -DUSEGLEW -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_image -mwindows -lfreeglut -lglew32 -lglu32 -lSOIL -lopengl32 -lm -o
+   comp = -Wall -DUSEGLEW -lmingw32 -lSDL2main -lSDL2 -lSDL2_mixer -lSDL2_image -lSDL2_ttf -mwindows -lfreeglut -lglew32 -lglu32 -lSOIL -lopengl32 -lm -o
 else
    ifeq ($(shell uname), Linux)
       exe = oHNO3.exe 

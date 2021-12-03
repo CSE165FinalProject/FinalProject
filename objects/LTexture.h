@@ -1,15 +1,15 @@
-#include "character.h"
+//CSE165 oHNO3 game
+//Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
+//Nov 29, 2021
 #include <string>
-
-#include <SDL_image.h>
-#include <SOIL/SOIL.h>
-#include <SOIL/image_dxt.h>
-#include <SDL_ttf.h>
-extern TTF_Font* gFont;
-// #include <SDL/SDL_image.h>
-// #include <SDL/SDL.h>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
+#include <SOIL/SOIL.h>
+//#include <SOIL/image_dxt.h>
+
+extern TTF_Font* gFont;
+
 
 SDL_Renderer* gRenderer = NULL;
 
@@ -196,4 +196,3 @@ int LTexture::getHeight()
 {
 	return mHeight;
 }
-#endif
