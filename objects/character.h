@@ -6,34 +6,28 @@
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 //#include "imageloader.cpp"
-// #include <SDL/SDL.h>
-// #include <SDL/SDL_image.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-//#include "sdlcreatewindow.cpp"
-//#include <createSDLWIN.h>
-//#include "LTexture.h"
-//LTexture gDotTexture;
+#include <SDL.h>
+#include <SDL_image.h>
 class character
 {
     public:
-        //The dimensions of the dot
-        static const int DOT_WIDTH = 20;
-        static const int DOT_HEIGHT = 20;
+        //The dimensions of the player
+        static const int PLAYER_WIDTH = 80;
+        static const int PLAYER_HEIGHT = 80;
 
         //Maximum axis velocity of the dot
-        static const int DOT_VEL = 10;
+        static const int PLAYER_VEL = 10;
 
         //Initializes the variables
         character();
 
-        //Takes key presses and adjusts the dot's velocity
+        //Takes key presses and adjusts the player's velocity
         void handleEvent(SDL_Event&e);
 		int defaultX;
-        //Moves the dot
+        //Moves the player
         void move();
 		//friend BadCloud;
-        //Shows the dot on the screen
+        //Shows the player on the screen
         void render();
 		//Get the position of character in x direction
 		int getXPOSC();
@@ -41,10 +35,10 @@ class character
 		int getYPOSC();
 		//void detectingCLOUDATTACK(BadCloud&ref);
     private:
-        //The X and Y offsets of the dot
+        //The X and Y offsets of the player
         int mPosX, mPosY;
 
-        //The velocity of the dot
+        //The velocity of the player
         int mVelX, mVelY;
 };
 int character::getYPOSC()
@@ -65,11 +59,7 @@ character::character()
 	mVelX = 0;
 	mVelY = 0;
 }
-//void character::render()
-//{
-//	//Show the dot
-//	gDotTexture.render(mPosX, mPosY);
-//}
+
 void character::handleEvent(SDL_Event& e)
 {
 	//If a key was pressed
@@ -78,10 +68,10 @@ void character::handleEvent(SDL_Event& e)
 		//Adjust the velocity
 		switch (e.key.keysym.sym)
 		{
-		case SDLK_UP: mVelY -= DOT_VEL; break;
-		case SDLK_DOWN: mVelY += DOT_VEL; break;
-		case SDLK_LEFT: mVelX -= DOT_VEL; break;
-		case SDLK_RIGHT: mVelX += DOT_VEL; break;
+		case SDLK_UP: mVelY -= PLAYER_VEL; break;
+		case SDLK_DOWN: mVelY += PLAYER_VEL; break;
+		case SDLK_LEFT: mVelX -= PLAYER_VEL; break;
+		case SDLK_RIGHT: mVelX += PLAYER_VEL; break;
 		}
 	}
 	//If a key was released
@@ -90,10 +80,10 @@ void character::handleEvent(SDL_Event& e)
 		//Adjust the velocity
 		switch (e.key.keysym.sym)
 		{
-		case SDLK_UP: mVelY += DOT_VEL; break;
-		case SDLK_DOWN: mVelY -= DOT_VEL; break;
-		case SDLK_LEFT: mVelX += DOT_VEL; break;
-		case SDLK_RIGHT: mVelX -= DOT_VEL; break;
+		case SDLK_UP: mVelY += PLAYER_VEL; break;
+		case SDLK_DOWN: mVelY -= PLAYER_VEL; break;
+		case SDLK_LEFT: mVelX += PLAYER_VEL; break;
+		case SDLK_RIGHT: mVelX -= PLAYER_VEL; break;
 		}
 
 	}
@@ -104,7 +94,7 @@ void character::move()
 	mPosX += mVelX;
 
 	//If the dot went too far to the left or right
-	if ((mPosX < 0) || (mPosX + DOT_WIDTH > SCREEN_WIDTH))
+	if ((mPosX+10 < 0) || (mPosX+10 + PLAYER_WIDTH > SCREEN_WIDTH))
 	{
 		//Move back
 		mPosX -= mVelX;
@@ -114,15 +104,10 @@ void character::move()
 	mPosY += mVelY;
 
 	//If the dot went too far up or down
-	if ((mPosY < 0) || (mPosY + DOT_HEIGHT > SCREEN_HEIGHT))
+	if ((mPosY+10 < 0) || (mPosY + PLAYER_HEIGHT > SCREEN_HEIGHT))
 	{
 		//Move back
 		mPosY -= mVelY;
 	}
 }
-//void character::render()
-//{
-//	//Show the dot
-//	gDotTexture.render(mPosX, mPosY);
-//}
 #endif

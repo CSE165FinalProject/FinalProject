@@ -17,12 +17,10 @@ void detectingCLOUD(BadCloud&BC, character& ch)
 	//printf("%d %d\n", cloudPOSX, cloudPOSY);
 	//printf("%d", cloudPOSY);
 	if (BC.attackIND == 2)
-	{
-
+	{		
 
 		if ((cloudPOSX < posPlayerX && cloudPOSX + BC.CLOUD_WIDTH > posPlayerX&& posPlayerY > cloudPOSY + BC.CLOUD_HEIGHT-100))
 		{
-
 			//gameover = true;
 			if (life > 0)
 			{
@@ -79,7 +77,4 @@ void detectionPOWERUP(powerup&pu, character&player)
 	{
 		fullHEALTH = 0;
 	}
-
-
-
 } 

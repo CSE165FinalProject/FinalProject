@@ -1,25 +1,27 @@
 //CSE165 oHNO3 game
 //Tyler Armstrong, Ralphilou Tatoy, add names guys
 //Nov 17, 2021
-// #include <SDL/SDL.h>
-// #include <SDL/SDL_image.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#ifndef CLOUD_FILE_H
+#define CLOUD_FILE_H 
+#include <SDL.h>
+#include <SDL_image.h>
+#include <time.h>
 //#include "sdlcreatewindow.cpp"
 //#include <createSDLWIN.h>
 //#include "imageloader.cpp"
-extern int timer;
-#include "character.h"
+extern int timer,timer1, timer2, timer3, timer4;
+extern int timerStarted1, timerStarted2, timerStarted3, timerStarted4;
+#include "objects/character.h"
 //#include "oHNO3.cpp"
 class BadCloud
 {
     public:
         //The dimensions of the Cloud
-        static const int CLOUD_WIDTH = 200;
-        static const int CLOUD_HEIGHT = 200;
+        static const int CLOUD_WIDTH = 190;
+        static const int CLOUD_HEIGHT = 160;
 
         //Maximum axis velocity of the Cloud
-        static const int CLOUD_VEL = 6;
+		static double CLOUD_VEL;
         //Motion of the cloud left to right and vice version
         //void movementBADCLOUD();
         //Initializes the variables
@@ -44,57 +46,173 @@ class BadCloud
 		//int getYPOS();
     private:
         //The X and Y offsets of the cloud
-        int mPosX, mPosY;
+        double mPosX, mPosY;
 		//Number of Clouds
 		static int numCLOUDS;
+		static int numAttack;
+		int id;
+		//int numAttack;
         //The velocity of the Cloud
         int mVelX, mVelY;
 };
 int BadCloud::getYPOS()
 {
+	//Get Y position of object
 	return mPosY;
 }
+//Static variables defintiion
 int BadCloud::numCLOUDS = 0;
+int BadCloud::numAttack = 0;
+double BadCloud::CLOUD_VEL = 6;
 void BadCloud::attack(BadCloud& Cloud, character& player)
 {
-	if (timer % 20 > 5 && timer %20<15)
+	//int startIT;
+	static double leaveONEgood = 3;
+	//Cloud 1
+	if (timerStarted1 == 1&& Cloud.id == 0)
 	{
-		Cloud.attackIND = 1;
+		if (timer1 % 20 > 12 && timer1 % 20 < 16)
+		{
+			
+			Cloud.attackIND = 1;
+			
+		}
+		else if (timer1 % 20 >= 16 && timer1 % 20 < 20) {
+			if (Cloud.attackIND == 1)
+			{
+				Cloud.attackIND = 2;
+			}
+			//leaveONEgood = 0;
+			//Cloud.attackIND = 2;
+		}
+		else
+		{
+			
+			Cloud.attackIND = 0;
+		}
 	}
-	else if(timer%20 >=15 && timer%20 < 20) {
-		Cloud.attackIND = 2;
-	}
-	else
+	//Cloud 2
+	if (timerStarted2 == 1&&Cloud.id == 1)
 	{
-		Cloud.attackIND = 0;
+		if (timer2 % 20 > 12 && timer2 % 20 < 16)
+		{
+			
+			Cloud.attackIND = 1;
+			
+		}
+		else if (timer2 % 20 >= 16 && timer2 % 20 < 20) {
+			if (Cloud.attackIND == 1)
+			{
+				Cloud.attackIND = 2;
+			}
+			//leaveONEgood = 0;
+			//Cloud.attackIND = 2;
+		}
+		else
+		{
+
+			Cloud.attackIND = 0;
+		}
 	}
+	//Cloud 3
+	if (timerStarted3 == 1 && Cloud.id == 2)
+	{
+		if (timer3 % 20 > 12 && timer3 % 20 < 16)
+		{
+			
+			Cloud.attackIND = 1;
+			
+		}
+		else if (timer3 % 20 >= 16 && timer3 % 20 < 20) {
+			if (Cloud.attackIND == 1)
+			{
+				Cloud.attackIND = 2;
+			}
+			//leaveONEgood = 0;
+			//Cloud.attackIND = 2;
+		}
+		else
+		{
+			if (Cloud.attackIND != 1)
+			{
+				Cloud.attackIND = 0;
+			}
+			//Cloud.attackIND = 0;
+		}
+
+	}
+	//Cloud 4
+	if (timerStarted4 == 1 && Cloud.id == 3)
+	{
+		if (timer4 % 20 > 12 && timer4 % 20 < 16)
+		{
+			
+			Cloud.attackIND = 1;
+			
+		}
+		else if (timer4 % 20 >= 16 && timer4 % 20 < 20) {
+			if (Cloud.attackIND == 1)
+			{
+				Cloud.attackIND = 2;
+			}
+			
+		}
+		else
+		{
+
+			Cloud.attackIND = 0;
+		}
+	}
+	
+	
+	
 }
 int BadCloud::getXPOS()
 {
+	//Get X position of object
 	return mPosX;
 }
 BadCloud::BadCloud()
 {
-	//Initialize the offsets
-	//numCLOUDS = 0;
-
-	mPosY= -130 +  numCLOUDS*150;
-	mPosX = numCLOUDS *70;
+	//initialize position
+	mPosY= -140 +  numCLOUDS*150;
+	mPosX = numCLOUDS *150;
+	/*mPosY = 0;
+	mPosX = 0;*/
+	//direction of cloud
 	directionofCLOUD = 0;
+
+	//attack
 	attackIND = 0;
+
 	//Initialize the velocity
 	mVelX = CLOUD_VEL;
 	mVelY = 0;
+
+	//Number of Attacking Clouds
+	//numAttack = 0;
+	
+	//Id of cloud
+	id = numCLOUDS;
+
+	//count the clouds present
 	numCLOUDS++;
 }
 void BadCloud::moveBC()
 {
-		//move to the right
+	//move to the right
+	if (timer % 10 == 0)
+	{
+		//increase clouds velocity through time
+		CLOUD_VEL += 0.01;
+		mVelX = CLOUD_VEL;
+	}
+	//move to the left
 	if (directionofCLOUD == 0)
 	{
 		mPosX += mVelX;
 
-		//If the dot went too far to the left or right
+		//If the Cloud went too far to the left or right
 		if (mPosX + CLOUD_WIDTH > SCREEN_WIDTH)
 		{
 			//Move back
@@ -103,7 +221,7 @@ void BadCloud::moveBC()
 		}
 
 	}
-	else if(directionofCLOUD == 1)
+	else if(directionofCLOUD == 1)//Move to the right
 	{
 		mPosX -= mVelX;
 		if (mPosX < 0)
@@ -114,8 +232,5 @@ void BadCloud::moveBC()
 		}
 	}	
 }
-//void BadCloud::render()
-//{
-//	//Show the Cloud
-//	gBadCloudTexture.render(mPosX, mPosY);
-//}
+
+#endif

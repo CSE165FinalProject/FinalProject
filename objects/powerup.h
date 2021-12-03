@@ -47,7 +47,6 @@ class powerup
         //The X and Y offsets of the cloud
         int mPosX, mPosY;
 
-
 		//int id;
 		//int numAttack;
         //The velocity of the Cloud
@@ -82,4 +81,5 @@ void powerup::spawn()
     mPosY = yspawncoords;
 
 }
+
 #endif
