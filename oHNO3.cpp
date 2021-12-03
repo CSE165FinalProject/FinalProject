@@ -2,6 +2,28 @@
 //Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
 //Nov 17, 2021
 //
+
+#ifdef __linux__ 
+#include <GL/glut.h>
+#include <cstring>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <stdio.h>
+#include <string>
+#include <time.h>
+#include "objects/character.h"
+#include "objects/cloud.h"
+#include "objects/LTexture.h"
+#include "detection.h"
+#include <SOIL/SOIL.h>
+#include <SOIL/image_DXT.h>
+#include <GL/glut.h>
+#include <SDL2/SDL_ttf.h>
+#include <fstream>
+#include "global.h"
+
+#elif _WIN32
+
 #include <gl/glut.h>
 #include <cstring>
 #include <SDL2/SDL.h>
@@ -19,6 +41,10 @@
 #include <SDL2/SDL_ttf.h>
 #include <fstream>
 #include "global.h"
+#else
+
+#endif
+
 //Screen dimension constants
 using namespace std;
 extern const int SCREEN_WIDTH = 944;
@@ -130,7 +156,7 @@ bool init()
 		}
 
 		//Create window
-		gWindow = SDL_CreateWindow("Acid Rain Game", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		gWindow = SDL_CreateWindow("oHN03", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		if (gWindow == NULL)
 		{
 			printf("Window could not be created! SDL Error: %s\n", SDL_GetError());

@@ -14,7 +14,7 @@ else
       exe = oHNO3.exe 
 	  testexe = opengl.exe
 
-	  comp = -lglut -lGL -lGLEW -lGLU -lSDL -lSDL_mixer -lSOIL -o
+	  comp = -lglut -lGL -lGLEW -lGLU -lSOIL -lSDL2 -lSDL2_mixer -lSDL2_image -lSDL2_ttf -o
    endif
 endif
 
