@@ -8,8 +8,6 @@ extern const int SCREEN_HEIGHT;
 //#include "imageloader.cpp"
 #include <SDL.h>
 #include <SDL_image.h>
-
-
 class character
 {
     public:
@@ -112,5 +110,4 @@ void character::move()
 		mPosY -= mVelY;
 	}
 }
-
 #endif

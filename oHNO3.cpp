@@ -1,11 +1,14 @@
 //CSE165 oHNO3 game
 //Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
 //Nov 17, 2021
-//
-#include <gl/glut.h>
-#include <cstring>
-#include <SDL.h>
-#include <SDL_image.h>
+#include <GL/glut.h>
+#ifdef _WIN32
+    #include <windows.h>
+#endif
+//Using SDL, SDL_image, standard IO, vectors, and strings
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_opengl.h>
 #include <stdio.h>
 #include <string>
 #include <time.h>
@@ -392,8 +395,30 @@ int main(int argc, char* argv[])
 		}
 		else
 		{
+
 			//Load media
 			if (!loadMedia())
+
+			//Main loop flag
+			quit = false;
+			//timer++;
+			//printf("%d", timer);
+			time_t start, end;
+			start = clock();
+			//Event handler
+			SDL_Event e;
+
+			//Declare the class objects
+			character dot;
+			BadCloud BCImage[4];
+			BadCloud * GCImage = BCImage;
+			///////BadCloud* AcidCloud = BCImage;
+			
+			//The background moving
+			int scrollingOffset = 0;
+
+			//While application is running
+			while (!quit)
 			{
 				printf("Failed to load media!\n");
 			}
@@ -620,8 +645,28 @@ int main(int argc, char* argv[])
 						quit = true;
 					}
 					
-
 			
+
+					//Handle input for the dot
+					dot.handleEvent(e);
+					//BCImage.movementBADCLOUD();
+				}
+				
+				//Move the dot
+				dot.move();
+				//GCImage->moveBC();
+				//switching to good to bad vice versa
+				/*if (timer % 10 > 5)
+				{
+					GCImage->attackIND = 1;
+				}
+				else
+				{
+					BCImage.attackIND = 0;
+				}*/
+				//////int randomCLOUDSPAWNDAMAGE;
+				srand(time(NULL));
+
 
 
 				}

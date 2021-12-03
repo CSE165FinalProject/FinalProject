@@ -37,7 +37,7 @@ class powerup
 		int getXPOS();
 		//Get Y position of the powerup
 		int getYPOS();
-		
+
         //Spawn Powerup
         void spawn();
         //Render powerup
@@ -46,8 +46,7 @@ class powerup
     private:
         //The X and Y offsets of the cloud
         int mPosX, mPosY;
-		
-		
+
 		//int id;
 		//int numAttack;
         //The velocity of the Cloud
@@ -82,4 +81,5 @@ void powerup::spawn()
     mPosY = yspawncoords;
 
 }
+
 #endif

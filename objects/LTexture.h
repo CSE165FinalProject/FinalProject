@@ -1,12 +1,15 @@
-#ifndef LTexture_FILE_H
-#define LTexture_FILE_H
 #include "character.h"
 #include <string>
+
 #include <SDL_image.h>
 #include <SOIL/SOIL.h>
 #include <SOIL/image_dxt.h>
 #include <SDL_ttf.h>
 extern TTF_Font* gFont;
+// #include <SDL/SDL_image.h>
+// #include <SDL/SDL.h>
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
 
 SDL_Renderer* gRenderer = NULL;
 
