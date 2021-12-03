@@ -362,7 +362,7 @@ bool loadMedia()
 	}
 	
 	//load font
-	gFont = TTF_OpenFont("images/gameFONT.ttf",20);
+	gFont = TTF_OpenFont("images/gameFONT.otf",20);
 	if (gFont == NULL)
 	{
 		printf("Failed to load font: %s\n", TTF_GetError());
@@ -605,7 +605,7 @@ int main(int argc, char* argv[])
 					timer4 = ((double)(end4 - start4) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
 					
 					//Show time Surviving
-					SDL_Color textcolor = { 255,0,0 };
+					SDL_Color textcolor = { 102,255,255 };
 					string s = to_string(timer);
 					s += "seconds";
 					if (!gTextTexture.loadFromRenderedText(s, textcolor))
