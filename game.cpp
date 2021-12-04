@@ -223,7 +223,6 @@ bool loadMedia(){
 		printf("Failed to load player texture!\n");
 		success = false;
 	}
-	 
 	//Load background texture
 	if(!gBGTexture.loadFromFile("images/goodland.jpg")){
 		printf("Failed to load good background texture!\n");

@@ -38,6 +38,7 @@ void close(); //Frees media and shuts down SDL
 
 int main(int argc, char* argv[]){
 	tryAgain = false;
+	//bool replay = true;
 	powerupLifetime = 0;
 	
 	while(!tryAgain){ //Start up SDL and create window
