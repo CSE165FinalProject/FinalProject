@@ -12,11 +12,8 @@ SDL_Renderer* gRenderer = NULL;
 
 class LTexture{
 	public:
-		//Initializes variables
-		LTexture();
-
-		//Deallocates memory
-		~LTexture();
+		LTexture();//Initializes variables
+		~LTexture();//Deallocates memory
 
 		//Loads image at specified path
 		bool loadFromFile(std::string path);

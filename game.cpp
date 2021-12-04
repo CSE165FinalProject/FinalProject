@@ -11,6 +11,7 @@ LTexture gBadCloudTexture;
 LTexture gGoodCloudTexture;
 LTexture gAcidCloudTexture;
 LTexture gBGTextureLater;
+LTexture gBGTextureLater2;
 LTexture gTextTexture;
 LTexture gHighScoreText;
 LTexture gPowerUp;
@@ -44,16 +45,12 @@ void BadCloud::render(int attack){ //render cloud
 }
 void loadTextures(){
 	death = SOIL_load_OGL_texture(
-		"images/go.png",
+		"images/deadEarth.jpg",
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
-		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT
-	);
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 }
-void loadTEXTTEXTURES(){
-	//load text
-	//printf("%d\n", timer);
-	//gTextTexture.render(((SCREEN_WIDTH - gTextTexture.getWidth()) / 2), (SCREEN_HEIGHT - gTextTexture.getHeight()) / 2);
+void loadTEXTTEXTURES(){//load text
 	gTextTexture.render(0, 0);
 	gHighScoreText.render(SCREEN_WIDTH - gHighScoreText.getWidth(), 0);
 	gLife.render(400, 0);
@@ -111,9 +108,8 @@ bool init(){
 
 	return success;
 }
-//Display death screen using glut and soil
-void disDeath(){
-	//display death screen
+
+void disDeath(){ //Display death screen using glut and soil
 	glClear(GL_COLOR_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
@@ -138,19 +134,19 @@ void disDeath(){
 	glDisable(GL_TEXTURE_2D);
 
 	//Display Surviving Time
-	string ST = "Surviving Time: ";
+	string ST = "Your Survival Time: ";
 	ST += to_string(timer);
 	int len = ST.size();
-	glRasterPos2f(300, 260);
+	glRasterPos2f(250, 340);
 	for(int i = 0; i < len; i++){
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ST[i]);
 	}
 
 	//Display Highest Surviving Time
-	string SHT = "Surviving Highest Time: ";
+	string SHT = "Highest Survival Time: ";
 	SHT += to_string(survivehighscore);
 	int len1 = SHT.size();
-	glRasterPos2f( 300, 240);
+	glRasterPos2f( 250, 320);
 	for(int i = 0; i < len1; i++){
 		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, SHT[i]);
 	}
@@ -167,8 +163,8 @@ void disDeath(){
 
 }
 void close(){
-	//Free loaded images
-	gPlayerTexture.free();
+	
+	gPlayerTexture.free(); //Free loaded images
 	gBGTexture.free();
 	gBadCloudTexture.free();
 	gGoodCloudTexture.free();
@@ -213,8 +209,8 @@ void idleFunc(){
 bool loadMedia(){
 	//Loading success flag
 	bool success = true;
-	//Load powerup texture
-	if(!gPowerUp.loadFromFile("images/powerup.png")){
+	
+	if(!gPowerUp.loadFromFile("images/umbrella.png")){//Load powerup texture
 		printf("Failed to load powerup texture!\n");
 		success = false;
 	}
@@ -224,27 +220,31 @@ bool loadMedia(){
 		success = false;
 	}
 	//Load background texture
-	if(!gBGTexture.loadFromFile("images/goodland.jpg")){
+	if(!gBGTexture.loadFromFile("images/ground/greenGrass.jpg")){
 		printf("Failed to load good background texture!\n");
 		success = false;
 	}
 	//Load background texture
-	if(!gBGTextureLater.loadFromFile("images/damageland.jpg")){
+	if(!gBGTextureLater.loadFromFile("images/ground/dyingGrass.jpg")){
+		printf("Failed to load bad background texture!\n");
+		success = false;
+	}
+    if(!gBGTextureLater2.loadFromFile("images/ground/dirt.jpg")){
 		printf("Failed to load bad background texture!\n");
 		success = false;
 	}
 	//Loud Warning Cloud
-	if(!gBadCloudTexture.loadFromFile("images/badcloud.png")){
+	if(!gBadCloudTexture.loadFromFile("images/clouds/rainCloud.png")){
 		printf("Failed to load Warning cloud texture!\n");
 		success = false;
 	}
 	//Load good cloud
-	if(!gGoodCloudTexture.loadFromFile("images/goodcloud.png")){
+	if(!gGoodCloudTexture.loadFromFile("images/clouds/cloud.png")){
 		printf("Failed to load goodcloud texture!\n");
 		success = false;
 	}
 	//load acid cloud
-	if(!gAcidCloudTexture.loadFromFile("images/acidrain.png")){
+	if(!gAcidCloudTexture.loadFromFile("images/clouds/acidCloud.png")){
 		printf("Failed to load acid rain texture!\n");
 		success = false;
 	}
@@ -267,11 +267,7 @@ bool loadMedia(){
 }
 //void glutLeaveMainLoop(void);
 void keyFunc(unsigned char k, int x, int y){
-	//end screen keyboard input
-	if(k == 'n' || k == 'N'){
-		//printf("Hello");
-		/*initializeSOIL();
-		glutPostRedisplay();*/
+	if(k == 'n' || k == 'N'){ //end screen keyboard input
 		tryAgain = false;
 		printf("%d", tryAgain);
 		quitSOILEX = true;
