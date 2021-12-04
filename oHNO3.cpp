@@ -200,8 +200,7 @@ int main(int argc, char* argv[]){
 					
 					//GameOver
 					if(gameover == 1){
-						
-						
+
 						if(survivehighscore < timer){
 							ofstream finputscore("data/survivetime.txt");
 							finputscore << timer << "\n";

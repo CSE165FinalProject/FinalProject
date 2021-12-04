@@ -3,6 +3,7 @@
 //Nov 17, 2021
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include "LTexture.h"
 
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
@@ -10,6 +11,7 @@ extern const int SCREEN_HEIGHT;
 class character{
 	//The X and Y offsets of the player
 	int mPosX, mPosY;
+	LTexture gPlayerTexture;
 
 	//The velocity of the player
 	int mVelX, mVelY;
@@ -37,23 +39,48 @@ class character{
 			//If a key was pressed
 			if(e.type == SDL_KEYDOWN && e.key.repeat == 0){
 				//Adjust the velocity
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_UP: mVelY -= PLAYER_VEL; break;
-				case SDLK_DOWN: mVelY += PLAYER_VEL; break;
-				case SDLK_LEFT: mVelX -= PLAYER_VEL; break;
-				case SDLK_RIGHT: mVelX += PLAYER_VEL; break;
+				switch(e.key.keysym.sym){
+				case SDLK_UP: 
+					mVelY -= PLAYER_VEL; 
+					if(!gPlayerTexture.loadFromFile("images/player/playerUp.png")){
+						printf("Failed to load player texture!\n");
+					}
+					break;
+				case SDLK_DOWN: 
+					mVelY += PLAYER_VEL;
+					if(!gPlayerTexture.loadFromFile("images/player/playerDown.png")){
+						printf("Failed to load player texture!\n");
+					}
+					break;
+				case SDLK_LEFT: 
+					mVelX -= PLAYER_VEL; 
+					if(!gPlayerTexture.loadFromFile("images/player/playerLeft.png")){
+						printf("Failed to load player texture!\n");
+					}
+					break;
+				case SDLK_RIGHT: 
+					mVelX += PLAYER_VEL; 
+					if(!gPlayerTexture.loadFromFile("images/player/playerRight.png")){
+						printf("Failed to load player texture!\n");
+					}
+					break;
 				}
 			}
 			//If a key was released
 			else if(e.type == SDL_KEYUP && e.key.repeat == 0){
 				//Adjust the velocity
-				switch (e.key.keysym.sym)
-				{
-				case SDLK_UP: mVelY += PLAYER_VEL; break;
-				case SDLK_DOWN: mVelY -= PLAYER_VEL; break;
-				case SDLK_LEFT: mVelX += PLAYER_VEL; break;
-				case SDLK_RIGHT: mVelX -= PLAYER_VEL; break;
+				switch (e.key.keysym.sym){
+				case SDLK_UP: 
+					mVelY += PLAYER_VEL; 
+					break;
+				case SDLK_DOWN: 
+					mVelY -= PLAYER_VEL; 
+					break;
+				case SDLK_LEFT: 
+					mVelX += PLAYER_VEL; 
+					break;
+				case SDLK_RIGHT: mVelX -= PLAYER_VEL;	
+					break;
 				}
 
 			}

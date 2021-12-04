@@ -2,7 +2,7 @@
 //Tyler Armstrong, Ralphilou Tatoy, Sy Loc, Vedaant Vyas
 //Nov 17, 2021
 #include "death.cpp"
-#include "objects/LTexture.h"
+//#include "objects/LTexture.h"
 
 GLuint death; //Textures
 LTexture gPlayerTexture;
@@ -56,7 +56,7 @@ void loadTEXTTEXTURES(){
 	//gTextTexture.render(((SCREEN_WIDTH - gTextTexture.getWidth()) / 2), (SCREEN_HEIGHT - gTextTexture.getHeight()) / 2);
 	gTextTexture.render(0, 0);
 	gHighScoreText.render(SCREEN_WIDTH - gHighScoreText.getWidth(), 0);
-	gLife.render(300, 0);
+	gLife.render(400, 0);
 	gFHealth.render(0, 600);
 }
 //The window we'll be rendering to
@@ -219,7 +219,7 @@ bool loadMedia(){
 		success = false;
 	}
 	//Load player texture
-	if(!gPlayerTexture.loadFromFile("images/player.png")){
+	if(!gPlayerTexture.loadFromFile("images/player/playerUp.png")){
 		printf("Failed to load player texture!\n");
 		success = false;
 	}
