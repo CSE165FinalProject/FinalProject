@@ -3,9 +3,7 @@
 //Nov 29, 2021
 #include "death.cpp"
 #include "objects/powerup.h"
-extern int gameover;
-extern int life;
-extern int fullHEALTH;
+#include "global.h"
 
 void detectingCLOUD(BadCloud&BC, character& ch){
 	int cloudPOSX, cloudPOSY;
@@ -17,31 +15,22 @@ void detectingCLOUD(BadCloud&BC, character& ch){
 	if(BC.attackIND == 2){		
 
 		if((cloudPOSX < posPlayerX && cloudPOSX + BC.CLOUD_WIDTH > posPlayerX&& posPlayerY > cloudPOSY + BC.CLOUD_HEIGHT-100)){
-			if (life > 0){
-				life--;
+			if(ch.getLife() > 0){
+				if(ch.getShield() > 0){
+					ch.dmgShield();
+				}
+				else{
+					ch.damage();
+				}
 			}
 			else{
 				gameover = true;
 			}
-			//gameover = true;
-			 //call the death cpp
-			//printf("%d", gameover);
-			//death();
 		}
 		else{
 			gameover = false;
-			//printf("%d", gameover);
 		}
 	}
-	//if(cloudPOS < posPlayer && cloudPOS + BC.CLOUD_WIDTH > posPlayer){
-	//	gameover = true; //call the death cpp
-	//	printf("%d", gameover);
-	//	//death();
-	//}
-	//else{
-	//	gameover = false;
-	//	//printf("%d", gameover);
-	//}
 }
 void detectionPOWERUP(powerup& pu, character& player){
 	int xpospu = pu.getXPOS();
@@ -49,7 +38,7 @@ void detectionPOWERUP(powerup& pu, character& player){
 	int xpospl = player.getXPOSC();
 	int ypospl = player.getYPOSC();
 
-	if((ypospl+20 > ypospu && ypospl+20 < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH)){
+	if((ypospl + 20 > ypospu && ypospl + 20 < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH)){
 			if(life < 20){
 				life++;
 			}

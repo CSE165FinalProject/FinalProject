@@ -15,15 +15,16 @@ using namespace std;
 
 extern const int SCREEN_WIDTH = 1200; //Screen dimension constants
 extern const int SCREEN_HEIGHT = 800;
+
 bool quit;
 bool tryAgain;
 bool quitSOILEX;
 int timer;
 int gameover;
 int life;
+int fullHEALTH;
 int powerupLifetime;
 int survivehighscore;
-int fullHEALTH;
 int timer1, timer2, timer3, timer4, cooldowntimer;
 int timerStarted1, timerStarted2, timerStarted3, timerStarted4;
 
@@ -125,9 +126,10 @@ int main(int argc, char* argv[]){
 						
 						
 						player.render(); //Render player
-						powerups.spawn(); //Pick random coordinates for powerup
-						powerups.render(); //Render powerups
-						
+						if(timer == 0 || timer % 15 == 0){
+							powerups.spawn(); //Pick random coordinates for powerup 
+						}
+						powerups.render();//Render powerups
 						//if timer started for each cloud, render and start attacking phase
 						if(timerStarted1 == 1){
 							end1 = clock();
@@ -179,28 +181,16 @@ int main(int argc, char* argv[]){
 						SDL_Color textcolor = {255, 0, 0};
 						string s = to_string(timer);
 						s += "seconds";
-						if(!gTextTexture.loadFromRenderedText(s, textcolor)){
-							printf("Failed to render game timer");
-						}
+						gTextTexture.loadFromRenderedText(s, textcolor);
 						//Show surviving high score
 						string high = "Your Surviving Highest Time: " + to_string(survivehighscore);
-						if(!gHighScoreText.loadFromRenderedText(high, textcolor)){
-							printf("Failed to render game timer");
-						}
+						gHighScoreText.loadFromRenderedText(high, textcolor);
 						//Show Life Force
 						string lifeFORCE = "Life: " + to_string(life);
-						if(!gLife.loadFromRenderedText(lifeFORCE, textcolor)){
-							printf("Failed to render game timer");
-						}
-						if(fullHEALTH == 1){
-							string fullHealth = "FULL HEALTH!!!";
-							if (!gFHealth.loadFromRenderedText(fullHealth, textcolor)){
-								printf("Failed to render game timer");
-							}
-						}
+						gLife.loadFromRenderedText(lifeFORCE, textcolor);
 						
-						//GameOver
-						if(gameover == 1){
+						
+						if(gameover == 1){ //GameOver
 
 							if(survivehighscore < timer){
 								ofstream finputscore("data/survivetime.txt");

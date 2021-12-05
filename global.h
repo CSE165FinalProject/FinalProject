@@ -3,3 +3,6 @@
 //Dec 2, 2021
 extern int timer,timer1, timer2, timer3, timer4;
 extern int timerStarted1, timerStarted2, timerStarted3, timerStarted4;
+
+extern int gameover;
+extern int fullHEALTH;

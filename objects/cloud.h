@@ -7,40 +7,29 @@
 #include "../global.h"
 
 class BadCloud{
-	//The X and Y offsets of the cloud
-	double mPosX, mPosY;
-	//Number of Clouds
-	static int numCLOUDS;
-	static int numAttack;
+	double mPosX, mPosY; //The X and Y offsets of the cloud
+	static int numCLOUDS; //Number of Clouds
+	static int numAttack; //int numAttack;
 	int id;
-	//int numAttack;
-	//The velocity of the Cloud
-	int mVelX, mVelY;
+	int mVelX, mVelY; //The velocity of the Cloud
 
     public:
-        //The dimensions of the Cloud
-        static const int CLOUD_WIDTH = 190;
-        static const int CLOUD_HEIGHT = 160;
-
-        //Maximum axis velocity of the Cloud
-		static double CLOUD_VEL;
+        static const int CLOUD_WIDTH = 200; //The dimensions of the Cloud
+        static const int CLOUD_HEIGHT = 200;
+        
+		static double CLOUD_VEL; //Maximum axis velocity of the Cloud
         //Motion of the cloud left to right and vice version
-        //void movementBADCLOUD();
-        //Initializes the variables
-		BadCloud(){
-			//initialize position
-			mPosY= -140 +  numCLOUDS*150;
+       
+		BadCloud(){ //Initializes the variables
+			
+			mPosY= -140 +  numCLOUDS*150; //initialize position
 			mPosX = numCLOUDS *150;
-			/*mPosY = 0;
-			mPosX = 0;*/
-			//direction of cloud
-			directionofCLOUD = 0;
 
-			//attack
-			attackIND = 0;
+			directionofCLOUD = 0; //direction of cloud
 
-			//Initialize the velocity
-			mVelX = CLOUD_VEL;
+			attackIND = 0; //attack
+
+			mVelX = CLOUD_VEL; //Initialize the velocity
 			mVelY = 0;
 
 			//Number of Attacking Clouds
@@ -48,9 +37,8 @@ class BadCloud{
 			
 			//Id of cloud
 			id = numCLOUDS;
-
-			//count the clouds present
-			numCLOUDS++;
+			
+			numCLOUDS++; //count the clouds present
 		}
         int directionofCLOUD;
         int attackIND;
@@ -58,10 +46,10 @@ class BadCloud{
 
         //Moves the Cloud
         void moveBC(){
-			//move to the right
-			if(timer % 10 == 0){
+			
+			if(timer % 10 == 0){ //move to the right
 				//increase clouds velocity through time
-				CLOUD_VEL += 0.01;
+				CLOUD_VEL += 0.0001;
 				mVelX = CLOUD_VEL;
 			}
 			//move to the left
@@ -86,24 +74,21 @@ class BadCloud{
 			}	
 		}
 
-        //Shows the Cloud on the screen
-        void render(int attack);
+        
+        void render(int attack); //renders Cloud to the screen
+		
+		int getXPOS(){ //Get X Position of the cloud
+			return mPosX; //Get X position of object
+		}
+		
+		int getYPOS(){ //Get Y position of the cloud
+			return mPosY; //Get Y position of object
+		}
 
-		//friend character;
-		//Get X Position of the cloud
-		int getXPOS(){
-			//Get X position of object
-			return mPosX;
-		}
-		//Get Y position of the cloud
-		int getYPOS(){
-			//Get Y position of object
-			return mPosY;
-		}
 		//Switching between good and bad cloud
 		void attack(BadCloud& Cloud, character& player){
 			//Cloud 1
-			if(timerStarted1 == 1&& Cloud.id == 0){
+			if(timerStarted1 == 1 && Cloud.id == 0){
 				if(timer1 % 20 > 12 && timer1 % 20 < 16){
 					
 					Cloud.attackIND = 1;
@@ -113,8 +98,6 @@ class BadCloud{
 					if(Cloud.attackIND == 1){
 						Cloud.attackIND = 2;
 					}
-					//leaveONEgood = 0;
-					//Cloud.attackIND = 2;
 				}
 				else{
 					Cloud.attackIND = 0;

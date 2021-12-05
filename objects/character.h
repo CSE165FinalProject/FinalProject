@@ -13,16 +13,15 @@ class character{
 	int mPosX, mPosY; //The X and Y offsets of the player
 	int mVelX, mVelY; //The velocity of the player
 	int defaultX;
+	int life = 25;
+	int shield; 
 
     public:
         static const int PLAYER_WIDTH = 80; //The dimensions of the player aka(hitbox)
         static const int PLAYER_HEIGHT = 80;
+        static const int PLAYER_VEL = 10; //Maximum axis velocity of the dot
 
-        //Maximum axis velocity of the dot
-        static const int PLAYER_VEL = 10;
-
-        //Initializes the variables
-        character(){
+        character(){//Initializes the variables
 			mPosX = 300; //player start location
 			mPosY = 311;
 			defaultX = mPosX;
@@ -35,27 +34,19 @@ class character{
 				switch(e.key.keysym.sym){ //Adjust the velocity
 				case SDLK_UP: 
 					mVelY -= PLAYER_VEL; 
-					if(!gPlayerTexture.loadFromFile("images/player/playerUp.png")){
-						printf("Failed to load player texture!\n");
-					}
+					gPlayerTexture.loadFromFile("images/player/playerUp.png");
 					break;
 				case SDLK_DOWN: 
 					mVelY += PLAYER_VEL;
-					if(!gPlayerTexture.loadFromFile("images/player/playerDown.png")){
-						printf("Failed to load player texture!\n");
-					}
+					gPlayerTexture.loadFromFile("images/player/playerDown.png");
 					break;
 				case SDLK_LEFT: 
 					mVelX -= PLAYER_VEL; 
-					if(!gPlayerTexture.loadFromFile("images/player/playerLeft.png")){
-						printf("Failed to load player texture!\n");
-					}
+					gPlayerTexture.loadFromFile("images/player/playerLeft.png");
 					break;
 				case SDLK_RIGHT: 
 					mVelX += PLAYER_VEL; 
-					if(!gPlayerTexture.loadFromFile("images/player/playerRight.png")){
-						printf("Failed to load player texture!\n");
-					}
+					gPlayerTexture.loadFromFile("images/player/playerRight.png");
 					break;
 				}
 			}
@@ -81,14 +72,14 @@ class character{
 			mPosX += mVelX; //Move the dot left or right
 
 			//If the dot went too far to the left or right
-			if((mPosX + 10 < 0) || (mPosX + 10 + PLAYER_WIDTH > SCREEN_WIDTH)){
+			if((mPosX < 0) || (mPosX + PLAYER_WIDTH > SCREEN_WIDTH)){
 				mPosX -= mVelX;//Move back
 			}
 
 			mPosY += mVelY; //Move the dot up or down
 
 			//If the dot went too far up or down
-			if((mPosY+10 < 0) || (mPosY + PLAYER_HEIGHT > SCREEN_HEIGHT)){
+			if((mPosY < 45) || (mPosY + PLAYER_HEIGHT > SCREEN_HEIGHT)){
 				mPosY -= mVelY; //Move back
 			}
 		}
@@ -101,5 +92,22 @@ class character{
 		
 		int getYPOSC(){//Get the position of character in y direction
 			return mPosY;
+		}
+
+		int getLife(){
+			return life;
+		}
+		
+		void damage(){
+			life - 5;
+			return;
+		}
+
+		int getShield(){
+			return shield;
+		}
+
+		void dmgShield(){
+			shield - 5;
 		}
 };

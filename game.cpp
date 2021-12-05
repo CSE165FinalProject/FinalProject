@@ -51,10 +51,9 @@ void loadTextures(){
 		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 }
 void loadTEXTTEXTURES(){//load text
-	gTextTexture.render(0, 0);
-	gHighScoreText.render(SCREEN_WIDTH - gHighScoreText.getWidth(), 0);
-	gLife.render(400, 0);
-	gFHealth.render(0, 600);
+	gTextTexture.render(10, 15);
+	gHighScoreText.render(SCREEN_WIDTH - (gHighScoreText.getWidth() + 10), 15);
+	gLife.render(500, 15);
 }
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -154,7 +153,7 @@ void disDeath(){ //Display death screen using glut and soil
 		//display acknowledgement of new high score
 		string congratuation = "NEW HIGHSCORE!!";
 		int len2 = congratuation.size();
-		glRasterPos2f(300, 220);
+		glRasterPos2f(250, 300);
 		for(int i = 0; i < len2; i++){
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, congratuation[i]);
 		}
@@ -171,18 +170,16 @@ void close(){
 	gTextTexture.free();
 	gPowerUp.free();
 	
-	//Font
-	TTF_CloseFont(gFont);
+	
+	TTF_CloseFont(gFont); //Font
 	gFont = NULL;
 	
-	//Destroy window	
-	SDL_DestroyRenderer(gRenderer);
+	SDL_DestroyRenderer(gRenderer); //Destroy window
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL;
 	gRenderer = NULL;
 	
-	//Quit SDL subsystems
-	IMG_Quit();
+	IMG_Quit(); //Quit SDL subsystems
 	SDL_Quit();
 	TTF_Quit();
 }
