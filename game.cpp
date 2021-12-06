@@ -90,6 +90,7 @@ bool init(){
 	bool success = true;
 
 	//Initialize SDL
+    Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096);
 	if(SDL_Init(SDL_INIT_VIDEO) < 0){
 		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		success = false;
@@ -298,12 +299,17 @@ void disSelect2(){
 void close(){
 	gPlayerTexture.free(); //Free loaded images
 	gBGTexture.free();
+    gBGTextureLater.free();
+    gBGTextureLater2.free();
 	gBadCloudTexture.free();
 	gGoodCloudTexture.free();
+    gAcidCloudTexture.free();
 	gTextTexture.free();
 	gPowerUp.free();
-	
-	
+	gShield.free();
+    gHighScoreText.free();
+    gLife.free();
+
 	TTF_CloseFont(gFont); //Font
 	gFont = NULL;
 	
@@ -340,6 +346,12 @@ bool loadMedia(){
 	//Loading success flag
 	bool success = true;
 	
+    rain = Mix_LoadMUS("sounds/rain.wav");
+    sunny = Mix_LoadMUS("sounds/sunnyDay.wav");
+    hit = Mix_LoadWAV( "sounds/acidHit.wav" );
+    umbrella = Mix_LoadWAV( "sounds/umbrellaOpen.wav" );
+
+
 	if(!gPowerUp.loadFromFile("images/umbrella.png")){//Load powerup texture
 		printf("Failed to load powerup texture!\n");
 		success = false;

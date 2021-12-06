@@ -6,10 +6,11 @@
 #include <time.h>
 #include "../global.h"
 
+int numCLOUDS = 0; //Number of Clouds
+
 class BadCloud{
+	
 	double mPosX, mPosY; //The X and Y offsets of the cloud
-	static int numCLOUDS; //Number of Clouds
-	static int numAttack; //int numAttack;
 	int id;
 	int mVelX, mVelY; //The velocity of the Cloud
 
@@ -17,7 +18,7 @@ class BadCloud{
         static const int CLOUD_WIDTH = 200; //The dimensions of the Cloud
         static const int CLOUD_HEIGHT = 200;
         
-		static double CLOUD_VEL; //Maximum axis velocity of the Cloud
+		double CLOUD_VEL = 6; //Maximum axis velocity of the Cloud
         //Motion of the cloud left to right and vice version
        
 		BadCloud(){ //Initializes the variables
@@ -40,6 +41,9 @@ class BadCloud{
 			
 			numCLOUDS++; //count the clouds present
 		}
+		~BadCloud(){
+		}
+		
         int directionofCLOUD;
         int attackIND;
         //Takes key presses and adjusts the Cloud's velocity
@@ -47,9 +51,9 @@ class BadCloud{
         //Moves the Cloud
         void moveBC(){
 			
-			if(timer % 10 == 0){ //move to the right
+			if(timer % 10 == 0 && CLOUD_VEL < 24){ //move to the right
 				//increase clouds velocity through time
-				CLOUD_VEL += 0.0001;
+				CLOUD_VEL += 1;
 				mVelX = CLOUD_VEL;
 			}
 			//move to the left
@@ -84,6 +88,9 @@ class BadCloud{
 		int getYPOS(){ //Get Y position of the cloud
 			return mPosY; //Get Y position of object
 		}
+		void numReset(){
+			numCLOUDS = 0;
+		}
 
 		//Switching between good and bad cloud
 		void attack(BadCloud& Cloud, character& player){
@@ -104,7 +111,7 @@ class BadCloud{
 				}
 			}
 			//Cloud 2
-			if(timerStarted2 == 1&&Cloud.id == 1){
+			if(timerStarted2 == 1 && Cloud.id == 1){
 				if(timer2 % 20 > 12 && timer2 % 20 < 16){
 					
 					Cloud.attackIND = 1;
@@ -153,9 +160,21 @@ class BadCloud{
 				else{
 					Cloud.attackIND = 0;
 				}
+			}
+			if(timerStarted5 == 1 && Cloud.id == 4){
+				if(timer5 % 20 > 12 && timer5 % 20 < 16){
+					
+					Cloud.attackIND = 1;
+					
+				}
+				else if(timer5 % 20 >= 16 && timer5 % 20 < 20){
+					if(Cloud.attackIND == 1){
+						Cloud.attackIND = 2;
+					}
+				}
+				else{
+					Cloud.attackIND = 0;
+				}
 			}	
 		}
 };
-int BadCloud::numCLOUDS = 0;
-int BadCloud::numAttack = 0;
-double BadCloud::CLOUD_VEL = 6;

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SDL2/SDL.h> //SDL2 installed libraries 
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
 #include <SOIL/SOIL.h> //SOIL installed library 
@@ -18,17 +19,18 @@ extern const int SCREEN_WIDTH = 1200; //Screen dimension constants
 extern const int SCREEN_HEIGHT = 800;
 
 bool quit;
-bool tryAgain;
-bool quitSOILEX;
+// bool tryAgain;
+// bool quitSOILEX;
 int timer;
 int gameover;
-int life;
-int shield;
-int fullHEALTH;
-int powerupLifetime;
 int survivehighscore;
-int timer1, timer2, timer3, timer4, cooldowntimer;
-int timerStarted1, timerStarted2, timerStarted3, timerStarted4;
+int timer1, timer2, timer3, timer4, timer5, cooldowntimer;
+int timerStarted1, timerStarted2, timerStarted3, timerStarted4, timerStarted5;
+
+Mix_Music *rain; 
+Mix_Music *sunny;
+Mix_Chunk *umbrella;
+Mix_Chunk *hit;
 
 bool init(); //Starts up SDL and creates window
 void close(); //Frees media and shuts down SDL
@@ -41,8 +43,6 @@ void SOILRender(int end);
 #include "game.cpp"
 
 int main(int argc, char* argv[]){
-	powerupLifetime = 0;
-
 	glutInit(&argc, argv);
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
 	glutInitWindowSize(900, 675);
@@ -56,10 +56,12 @@ int main(int argc, char* argv[]){
 
 void SDLgame(){
 	init();
+	
 	if (!loadMedia()){ //Load media
 		printf("Failed to load media!\n");
 	}
 	else{
+		Mix_PlayMusic(rain, -1);
 		quit = false; //Main loop flag
 		ifstream fgetdata("data/survivetime.txt"); //getting Highscore
 		fgetdata >> survivehighscore;
@@ -70,13 +72,14 @@ void SDLgame(){
 		time_t start2 = 0, end2 = 0;
 		time_t start3 = 0, end3 = 0;
 		time_t start4 = 0, end4 = 0;
+		time_t start5 = 0, end5 = 0;
 		start = clock();
 		
 		SDL_Event e; //Event handler
 
 		character player; //Declare the class objects
-		BadCloud BCImage[4];
-		
+		BadCloud BCImage[5];
+		powerup powerups;
 
 		while(!quit){ //While application is running
 			while (SDL_PollEvent(&e) != 0){ //Handle events on queue
@@ -89,27 +92,32 @@ void SDLgame(){
 			player.move(); //Move the Player
 
 			
-			if(timer % 20 <= 5 && timerStarted1 == 0){ //Start Timer at diff. instances for diff. clouds
+			if(timer % 25 <= 5 && timerStarted1 == 0){ //Start Timer at diff. instances for diff. clouds
 				start1 = clock();
 				timerStarted1 = 1;
 			}
-			else if(timer % 20 > 5 && timer % 20 <= 10 && timerStarted2 == 0){
+			else if(timer % 25 > 5 && timer % 25 <= 10 && timerStarted2 == 0){
 				start2 = clock();
 				timerStarted2 = 1;
 			}
-			else if(timer % 20 > 10 && timer % 20 <= 15 && timerStarted3 == 0){
+			else if(timer % 25 > 10 && timer % 25 <= 15 && timerStarted3 == 0){
 				start3 = clock();
 				timerStarted3 = 1;
 			}
-			else if(timer % 20 > 15 && timer % 20 <= 20 && timerStarted4 == 0){
+			else if(timer % 25 > 15 && timer % 25 <= 20 && timerStarted4 == 0){
 				start4 = clock();
 				timerStarted4 = 1;
+			}
+			else if(timer % 25 > 20 && timer % 25 <= 25 && timerStarted5 == 0){
+				start4 = clock();
+				timerStarted5 = 1;
 			}
 
 			BCImage[0].moveBC(); //Cloud Move
 			BCImage[1].moveBC();
 			BCImage[2].moveBC();
 			BCImage[3].moveBC();
+			BCImage[4].moveBC();
 
 			//Clear screen
 			SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
@@ -131,17 +139,19 @@ void SDLgame(){
 			detectingCLOUD(BCImage[1], player);
 			detectingCLOUD(BCImage[2], player);
 			detectingCLOUD(BCImage[3], player);
+			detectingCLOUD(BCImage[4], player);
 			
 			
 			player.render(); //Render player
 			
-			powerup powerups;
-
 			if(timer == 0 || timer % 15 == 0){
+				powerups.numreset();
 				powerups.spawn(); //Pick random coordinates for powerup 
-				powerups.~powerup();
 			}
-			powerups.render(); //Render powerups
+			if(powerups.getNum() == 0){
+				powerups.render(); //Render powerups
+			}
+
 			detectionPOWERUP(powerups, player); //Detect powerup if player touches
 
 			//if timer started for each cloud, render and start attacking phase
@@ -165,6 +175,11 @@ void SDLgame(){
 				BCImage[3].attack(BCImage[3], player);
 				BCImage[3].render(BCImage[3].attackIND);
 			}
+			if(timerStarted1 == 1){
+				end5 = clock();
+				BCImage[4].attack(BCImage[4], player);
+				BCImage[4].render(BCImage[4].attackIND);
+			}
 			
 			//show timer
 			//load text, health, timer, high timer score
@@ -187,7 +202,7 @@ void SDLgame(){
 			timer2 = ((double)(end2 - start2) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
 			timer3 = ((double)(end3 - start3) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
 			timer4 = ((double)(end4 - start4) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
-			
+			timer5 = ((double)(end5 - start5) / CLOCKS_PER_SEC) + (randomSpeedBoost * 0.2);
 			//Show time Surviving
 			SDL_Color textcolor = {255, 0, 0};
 			string s = to_string(timer);
@@ -197,29 +212,43 @@ void SDLgame(){
 			string high = "Your Highest Survival Time: " + to_string(survivehighscore);
 			gHighScoreText.loadFromRenderedText(high, textcolor);
 			//Show Life Force
-			string lifeFORCE = "Life: " + to_string(life);
+			string lifeFORCE = "Life: " + to_string(player.getLife());
 			gLife.loadFromRenderedText(lifeFORCE, textcolor);
 
 			string shield = "Shield: " + to_string(player.getShield());
 			gShield.loadFromRenderedText(shield, textcolor);
 			
 			
-			if(gameover == 1){ //GameOver
+			if(gameover){ //GameOver
 
 				if(survivehighscore < timer){
 					ofstream finputscore("data/survivetime.txt");
 					finputscore << timer << "\n";
 				}
 				quit = true;
+				
 			}
+		}
+		gameover = false;
+		timer1 = timer2 = timer3 = timer4 = timer5 = cooldowntimer = 0;
+		timerStarted1 = timerStarted2 = timerStarted3 = timerStarted4 = timerStarted5 = 0;
+		for(int i = 0; i < 5; i++){
+			BCImage[i].numReset();
+			BCImage[i].~BadCloud();
 		}	
+		Mix_HaltMusic();
+		Mix_FreeMusic(rain);
+		Mix_FreeChunk(hit);
+		Mix_FreeChunk(umbrella);
+		close(); //Close SDL stuff
 	}
-	close(); //Close SDL stuff
+	
 	SOILRender(1);
 }
 
 
 void SOILRender(int end){
+	
 	if(end == 0){
 		glutDisplayFunc(disSelect);
 		glutIdleFunc(idleFunc);

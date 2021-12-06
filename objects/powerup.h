@@ -7,6 +7,7 @@
 #include "../global.h"
 
 class powerup{
+    int num = 0;
     int mPosX, mPosY; //The X and Y start coordinates of the cloud
     //int mVelX, mVelY;
 
@@ -17,8 +18,6 @@ class powerup{
     
         //Initializes the variables
         powerup(){ //Initialize coordinates and velocity
-            mPosX = 0;
-            mPosY = 0;
             //mVelX = 0;
             //mVelY = 0;
         }
@@ -38,13 +37,30 @@ class powerup{
             return mPosY;
         }
 
+        int getNum(){
+            return num;
+        }
         
         void spawn(){ //Spawn Powerup
+            if(num > 0){
+                num--;
+            }
+            
             int xspawncoords = rand() % 1100 + 1; //Get random coordinates
             int yspawncoords = rand() % 700 + 50;
             mPosX = xspawncoords;
             mPosY = yspawncoords;
             return; 
+        }
+
+        void numadd(){
+            num++;
+            return;
+        }   
+
+        void numreset(){
+            num = 0;
+            return;
         }
         
         void render();//Render powerup

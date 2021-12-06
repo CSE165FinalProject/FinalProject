@@ -14,7 +14,7 @@ class character{
 	int mVelX, mVelY; //The velocity of the player
 	int defaultX;
 	int life = 25;
-	int shield; 
+	int shield = 0; 
 
     public:
         static const int PLAYER_WIDTH = 80; //The dimensions of the player aka(hitbox)
@@ -100,7 +100,7 @@ class character{
 		}
 		
 		void damage(){
-			life - 5;
+			life -= 5;
 			return;
 		}
 
@@ -109,12 +109,12 @@ class character{
 		}
 
 		void dmgShield(){
-			shield - 5;
+			shield -= 5;
 			return;
 		}
 
 		void addShield(){
-			shield + 10;
+			shield += 10;
 			return;
 		}
 };

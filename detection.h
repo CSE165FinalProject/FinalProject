@@ -5,6 +5,8 @@
 #include "objects/powerup.h"
 #include "global.h"
 
+int cloudTime = 0;
+
 void detectingCLOUD(BadCloud&BC, character& ch){
 	int cloudPOSX, cloudPOSY;
 	cloudPOSX = BC.getXPOS();
@@ -13,24 +15,27 @@ void detectingCLOUD(BadCloud&BC, character& ch){
 	int posPlayerY = ch.getYPOSC();
 
 	if(BC.attackIND == 2){		
-
-		if((cloudPOSX < posPlayerX && cloudPOSX + BC.CLOUD_WIDTH > posPlayerX&& posPlayerY > cloudPOSY + BC.CLOUD_HEIGHT-100)){
-			if(ch.getLife() > 0){
+		int temp = timer;
+		if((posPlayerY + 20 > cloudPOSY && posPlayerY + 20 < cloudPOSY + BC.CLOUD_HEIGHT) && (posPlayerX + 20 > cloudPOSX && posPlayerX + 20 < cloudPOSX + BC.CLOUD_WIDTH)){
+			if(ch.getLife() > 0 && (temp - (cloudTime + 1)) > 0){
+				Mix_PlayChannel(-1, hit, 0);
 				if(ch.getShield() > 0){
 					ch.dmgShield();
 				}
 				else{
 					ch.damage();
 				}
+				cloudTime = timer;
 			}
-			else{
+			if(ch.getLife() <= 0){
 				gameover = true;
 			}
-		}
-		else{
-			gameover = false;
+			else{
+				gameover = false;
+			}
 		}
 	}
+	return;
 }
 void detectionPOWERUP(powerup& pu, character& player){
 	int xpospu = pu.getXPOS();
@@ -39,7 +44,11 @@ void detectionPOWERUP(powerup& pu, character& player){
 	int ypospl = player.getYPOSC();
 
 	if((ypospl + 20 > ypospu && ypospl + 20 < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH)){
-		player.addShield();
-		pu.~powerup();
+		if(pu.getNum() == 0){
+			Mix_PlayChannel(-1, umbrella, 0);
+			player.addShield();
+			pu.numadd();
+		}
 	}
+	return;
 } 
