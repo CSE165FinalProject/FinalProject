@@ -62,6 +62,7 @@ void SDLgame(){
 	}
 	else{
 		Mix_PlayMusic(rain, -1);
+		//Mix_VolumeMusic(MIX_MAX_VOLUME/2);
 		quit = false; //Main loop flag
 		ifstream fgetdata("data/survivetime.txt"); //getting Highscore
 		fgetdata >> survivehighscore;
@@ -240,6 +241,7 @@ void SDLgame(){
 		Mix_FreeMusic(rain);
 		Mix_FreeChunk(hit);
 		Mix_FreeChunk(umbrella);
+		Mix_CloseAudio();
 		close(); //Close SDL stuff
 	}
 	

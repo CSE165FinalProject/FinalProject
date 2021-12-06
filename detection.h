@@ -29,6 +29,7 @@ void detectingCLOUD(BadCloud&BC, character& ch){
 			}
 			if(ch.getLife() <= 0){
 				gameover = true;
+				cloudTime = 0;
 			}
 			else{
 				gameover = false;
@@ -44,7 +45,7 @@ void detectionPOWERUP(powerup& pu, character& player){
 	int ypospl = player.getYPOSC();
 
 	if((ypospl + 20 > ypospu && ypospl + 20 < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH)){
-		if(pu.getNum() == 0){
+		if(pu.getNum() == 0 && player.getShield() < 50){
 			Mix_PlayChannel(-1, umbrella, 0);
 			player.addShield();
 			pu.numadd();
