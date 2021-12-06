@@ -22,8 +22,8 @@ class BadCloud{
        
 		BadCloud(){ //Initializes the variables
 			
-			mPosY= -140 +  numCLOUDS*150; //initialize position
-			mPosX = numCLOUDS *150;
+			mPosY = 15 + numCLOUDS * 150; //initialize position
+			mPosX = numCLOUDS * 150;
 
 			directionofCLOUD = 0; //direction of cloud
 

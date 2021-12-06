@@ -39,14 +39,7 @@ void detectionPOWERUP(powerup& pu, character& player){
 	int ypospl = player.getYPOSC();
 
 	if((ypospl + 20 > ypospu && ypospl + 20 < ypospu + pu.POWERUP_HEIGHT) && (xpospl + 20 > xpospu && xpospl + 20 < xpospu + pu.POWERUP_WIDTH)){
-			if(life < 20){
-				life++;
-			}
-			else{
-				fullHEALTH = 1;
-			}
-	}
-	else{
-		fullHEALTH = 0;
+		player.addShield();
+		pu.~powerup();
 	}
 } 

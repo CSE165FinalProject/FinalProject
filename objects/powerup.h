@@ -22,6 +22,8 @@ class powerup{
             //mVelX = 0;
             //mVelY = 0;
         }
+        ~powerup(){
+        }
 
         //Shows the Power up on the screen
        // void render();

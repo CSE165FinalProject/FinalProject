@@ -5,6 +5,9 @@
 //#include "objects/LTexture.h"
 
 GLuint death; //Textures
+GLuint start;
+GLuint selectCloud;
+GLuint selectBadCloud;
 LTexture gPlayerTexture;
 LTexture gBGTexture;
 LTexture gBadCloudTexture;
@@ -16,7 +19,13 @@ LTexture gTextTexture;
 LTexture gHighScoreText;
 LTexture gPowerUp;
 LTexture gLife;
+LTexture gShield;
 LTexture gFHealth;
+
+int a = 210;
+int b = 345; 
+int c = 165;
+int d = 265;
 
 TTF_Font* gFont = NULL; //Font
 
@@ -49,11 +58,30 @@ void loadTextures(){
 		SOIL_LOAD_AUTO,
 		SOIL_CREATE_NEW_ID,
 		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+
+    start = SOIL_load_OGL_texture(
+		"images/liveEarth.jpg",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+
+    selectCloud = SOIL_load_OGL_texture(
+		"images/clouds/cloud.png",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
+
+    selectBadCloud = SOIL_load_OGL_texture(
+		"images/clouds/acidCloud.png",
+		SOIL_LOAD_AUTO,
+		SOIL_CREATE_NEW_ID,
+		SOIL_FLAG_MIPMAPS | SOIL_FLAG_INVERT_Y | SOIL_FLAG_NTSC_SAFE_RGB | SOIL_FLAG_COMPRESS_TO_DXT);
 }
 void loadTEXTTEXTURES(){//load text
 	gTextTexture.render(10, 15);
 	gHighScoreText.render(SCREEN_WIDTH - (gHighScoreText.getWidth() + 10), 15);
-	gLife.render(500, 15);
+	gLife.render(400, 15);
+    gShield.render(500, 15);
 }
 //The window we'll be rendering to
 SDL_Window* gWindow = NULL;
@@ -158,11 +186,116 @@ void disDeath(){ //Display death screen using glut and soil
 			glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, congratuation[i]);
 		}
 	}
-	glFlush();
+    ST = "Play Game                                   Quit";
+	len = ST.size();
+	glRasterPos2f(200, 260);
 
+	for(int i = 0; i < len; i++){
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ST[i]);
+	}
+
+	glFlush();
 }
+
+void disStart(){ //Display start screen using glut and soil
+	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, start);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+	glBegin(GL_POLYGON);
+	glTexCoord2f(0.0f, 0.0f);
+	glVertex2f(0, 0);
+
+	glTexCoord2f(1.0f, 0.0f);
+	glVertex2f(640, 0);
+
+	glTexCoord2f(1.0f, 1.0f);
+	glVertex2f(640, 480);
+
+	glTexCoord2f(0.0f, 1.0f);
+	glVertex2f(0, 480);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+
+	//Display Surviving Time
+	string ST = "Play Game";
+	int len = ST.size();
+	glRasterPos2f(250, 340);
+
+	for(int i = 0; i < len; i++){
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ST[i]);
+	}
+
+    ST = "Quit";
+	len = ST.size();
+	glRasterPos2f(250, 300);
+    
+	for(int i = 0; i < len; i++){
+		glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, ST[i]);
+	}	
+}
+
+void disSelect(){
+        disStart();
+
+        glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, selectCloud);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glMatrixMode(GL_MODELVIEW);
+
+		glBegin(GL_POLYGON);
+        
+		glTexCoord2d(0.0, 0.0);
+		glVertex2d(a - 25, b - 20);
+
+		glTexCoord2d(0.0, 1.0);
+		glVertex2d(a - 25, b + 20);
+
+		glTexCoord2d(1.0, 1.0);
+		glVertex2d(a + 25, b + 20);
+
+		glTexCoord2d(1.0, 0.0);
+		glVertex2d(a + 25, b - 20);
+		glEnd();
+        glFlush();
+}
+
+void disSelect2(){
+        disDeath();
+
+        glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, selectBadCloud);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glMatrixMode(GL_MODELVIEW);
+
+		glBegin(GL_POLYGON);
+        
+		glTexCoord2d(0.0, 0.0);
+		glVertex2d(c - 25, d - 20);
+
+		glTexCoord2d(0.0, 1.0);
+		glVertex2d(c - 25, d + 20);
+
+		glTexCoord2d(1.0, 1.0);
+		glVertex2d(c + 25, d + 20);
+
+		glTexCoord2d(1.0, 0.0);
+		glVertex2d(c + 25, d - 20);
+		glEnd();
+        glFlush();
+}
+
 void close(){
-	
 	gPlayerTexture.free(); //Free loaded images
 	gBGTexture.free();
 	gBadCloudTexture.free();
@@ -264,14 +397,61 @@ bool loadMedia(){
 }
 //void glutLeaveMainLoop(void);
 void keyFunc(unsigned char k, int x, int y){
-	if(k == 'n' || k == 'N'){ //end screen keyboard input
-		tryAgain = false;
-		printf("%d", tryAgain);
-		quitSOILEX = true;
-		//init();	
+	if(k == 13){ //end screen keyboard input
+        if(b == 345){
+            SOILRender(2);
+        }
+        else if(b == 305){
+            exit(0);
+        }
 	}
-	else if (k == 'm' || k == 'M'){
-		tryAgain = true;
-		quitSOILEX = true;
-	}
+}
+
+void keyFunc2(unsigned char k, int x, int y){
+    if(k == 13){
+        if(c == 165){
+            SOILRender(0);
+        }
+        else if(c == 355){
+            exit(0);
+        }
+    }
+}
+
+void startFunc(int k, int x, int y){
+    if(k == GLUT_KEY_UP){
+        if(b >= 345){
+            b = 305;
+        }
+        else{
+            b += 40;
+        } 
+    }
+    if(k == GLUT_KEY_DOWN){
+        if(b <= 305){
+            b = 345;
+        }
+        else{
+            b -= 40;
+        } 
+    }
+}
+
+void endFunc(int k, int x, int y){
+	if(k == GLUT_KEY_RIGHT){
+        if(c == 355){
+            c = 165;
+        }
+        else{
+            c += 190;
+        } 
+    }
+    if(k == GLUT_KEY_LEFT){
+        if(c <= 165){
+            c = 355;
+        }
+        else{
+            c -= 190;
+        } 
+    }
 }

@@ -22,8 +22,9 @@ class character{
         static const int PLAYER_VEL = 10; //Maximum axis velocity of the dot
 
         character(){//Initializes the variables
-			mPosX = 300; //player start location
-			mPosY = 311;
+			gPlayerTexture.loadFromFile("images/player/playerUp.png");
+			mPosX = 550; //player start location
+			mPosY = 700;
 			defaultX = mPosX;
 			mVelX = 0;//Initialize the velocity
 			mVelY = 0;
@@ -109,5 +110,11 @@ class character{
 
 		void dmgShield(){
 			shield - 5;
+			return;
+		}
+
+		void addShield(){
+			shield + 10;
+			return;
 		}
 };
