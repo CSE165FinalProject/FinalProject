@@ -1,7 +1,6 @@
 //CSE165 oHNO3 game
 //Tyler Armstrong, Ralphilou Tatoy, Sy Loc Vedaant Vyas
 //Nov 29, 2021
-#include "death.cpp"
 #include "objects/powerup.h"
 #include "global.h"
 
