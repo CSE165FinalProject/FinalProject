@@ -62,7 +62,7 @@ void SDLgame(){
 	}
 	else{
 		Mix_PlayMusic(rain, -1);
-		//Mix_VolumeMusic(MIX_MAX_VOLUME/2);
+		Mix_VolumeMusic(MIX_MAX_VOLUME/4);
 		quit = false; //Main loop flag
 		ifstream fgetdata("data/survivetime.txt"); //getting Highscore
 		fgetdata >> survivehighscore;
@@ -264,6 +264,7 @@ void SOILRender(int end){
 		glutIdleFunc(idleFunc);
 		glutSpecialFunc(endFunc);
 		glutKeyboardFunc(keyFunc2);
+		
 	}
 	else if(end == 2){
 		SDLgame();
