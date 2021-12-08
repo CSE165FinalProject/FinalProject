@@ -28,7 +28,6 @@ int timer1, timer2, timer3, timer4, timer5, cooldowntimer;
 int timerStarted1, timerStarted2, timerStarted3, timerStarted4, timerStarted5;
 
 Mix_Music *rain; 
-Mix_Music *sunny;
 Mix_Chunk *umbrella;
 Mix_Chunk *hit;
 

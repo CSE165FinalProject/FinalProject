@@ -345,7 +345,6 @@ bool loadMedia(){
 	bool success = true;
 	
     rain = Mix_LoadMUS("sounds/rain.wav");
-    sunny = Mix_LoadMUS("sounds/sunnyDay.wav");
     hit = Mix_LoadWAV( "sounds/acidHit.wav" );
     umbrella = Mix_LoadWAV( "sounds/umbrellaOpen.wav" );
 

@@ -33,19 +33,35 @@ class character{
         void handleEvent(SDL_Event& e){//Takes key presses and adjusts the player's velocity
 			if(e.type == SDL_KEYDOWN && e.key.repeat == 0){ //If a key was pressed
 				switch(e.key.keysym.sym){ //Adjust the velocity
-				case SDLK_UP: 
+				case SDLK_UP:
 					mVelY -= PLAYER_VEL; 
 					gPlayerTexture.loadFromFile("images/player/playerUp.png");
 					break;
-				case SDLK_DOWN: 
+				case SDLK_w: 
+					mVelY -= PLAYER_VEL; 
+					gPlayerTexture.loadFromFile("images/player/playerUp.png");
+					break;
+				case SDLK_DOWN:
 					mVelY += PLAYER_VEL;
 					gPlayerTexture.loadFromFile("images/player/playerDown.png");
 					break;
-				case SDLK_LEFT: 
+				case SDLK_s: 
+					mVelY += PLAYER_VEL;
+					gPlayerTexture.loadFromFile("images/player/playerDown.png");
+					break;
+				case SDLK_LEFT:
+					mVelX -= PLAYER_VEL; 
+					gPlayerTexture.loadFromFile("images/player/playerLeft.png");
+					break; 
+				case SDLK_a: 
 					mVelX -= PLAYER_VEL; 
 					gPlayerTexture.loadFromFile("images/player/playerLeft.png");
 					break;
-				case SDLK_RIGHT: 
+				case SDLK_RIGHT:
+					mVelX += PLAYER_VEL; 
+					gPlayerTexture.loadFromFile("images/player/playerRight.png");
+					break;
+				case SDLK_d: 
 					mVelX += PLAYER_VEL; 
 					gPlayerTexture.loadFromFile("images/player/playerRight.png");
 					break;
@@ -56,13 +72,26 @@ class character{
 				case SDLK_UP: 
 					mVelY += PLAYER_VEL; 
 					break;
-				case SDLK_DOWN: 
+				case SDLK_w:
+					mVelY += PLAYER_VEL;
+					break;
+				case SDLK_DOWN:
+					mVelY -= PLAYER_VEL;
+					break; 
+				case SDLK_s:
 					mVelY -= PLAYER_VEL; 
 					break;
-				case SDLK_LEFT: 
+				case SDLK_LEFT:
+					mVelX += PLAYER_VEL;
+					break;
+				case SDLK_a:
 					mVelX += PLAYER_VEL; 
 					break;
-				case SDLK_RIGHT: mVelX -= PLAYER_VEL;	
+				case SDLK_RIGHT: 
+					mVelX -= PLAYER_VEL;	
+					break;
+				case SDLK_d:
+					mVelX -= PLAYER_VEL;	
 					break;
 				}
 

@@ -8,6 +8,5 @@ extern int gameover;
 extern int fullHEALTH;
 
 extern Mix_Music *rain; 
-extern Mix_Music *sunny;
 extern Mix_Chunk *umbrella;
 extern Mix_Chunk *hit;
