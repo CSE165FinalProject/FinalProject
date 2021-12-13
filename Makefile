@@ -27,4 +27,4 @@ run: #make run
 	./$(exe)
 
 clean: #only cleans in linux
-	rm -f yourcode.exe yourcode.exe 
+	rm -f oHNO3win.exe oHNO3.exe 
