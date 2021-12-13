@@ -5,7 +5,6 @@ extern int timer,timer1, timer2, timer3, timer4, timer5;
 extern int timerStarted1, timerStarted2, timerStarted3, timerStarted4, timerStarted5;
 
 extern int gameover;
-extern int fullHEALTH;
 
 extern Mix_Music *rain; 
 extern Mix_Chunk *umbrella;
