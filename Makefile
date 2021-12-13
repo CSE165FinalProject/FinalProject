@@ -14,23 +14,17 @@ else
    	endif
 endif
 
-all:
+all: #make
 	$(CC) $(gamefile) $(comp) $(exe) 
 
-test:
-	$(CC) $(testfile) $(comp) $(testexe)
+debug: #for debugging with gdb
+	g++ -g oHNO3.cpp -o broken
 
-debug: 
-	g++ -g OpenGL.cpp -o broken
-
-debugtest: 
+debugtest: #run gdb
 	gdb broken
 
-run: 
+run: #make run
 	./$(exe)
 
-runtest: 
-	./$(testexe)
-
 clean: #only cleans in linux
-	rm -f oHNO3win.exe oHNO3.exe 
+	rm -f yourcode.exe yourcode.exe 
