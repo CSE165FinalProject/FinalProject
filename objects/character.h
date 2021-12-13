@@ -34,33 +34,21 @@ class character{
 			if(e.type == SDL_KEYDOWN && e.key.repeat == 0){ //If a key was pressed
 				switch(e.key.keysym.sym){ //Adjust the velocity
 				case SDLK_UP:
-					mVelY -= PLAYER_VEL; 
-					gPlayerTexture.loadFromFile("images/player/playerUp.png");
-					break;
 				case SDLK_w: 
 					mVelY -= PLAYER_VEL; 
 					gPlayerTexture.loadFromFile("images/player/playerUp.png");
 					break;
 				case SDLK_DOWN:
-					mVelY += PLAYER_VEL;
-					gPlayerTexture.loadFromFile("images/player/playerDown.png");
-					break;
 				case SDLK_s: 
 					mVelY += PLAYER_VEL;
 					gPlayerTexture.loadFromFile("images/player/playerDown.png");
 					break;
 				case SDLK_LEFT:
-					mVelX -= PLAYER_VEL; 
-					gPlayerTexture.loadFromFile("images/player/playerLeft.png");
-					break; 
 				case SDLK_a: 
 					mVelX -= PLAYER_VEL; 
 					gPlayerTexture.loadFromFile("images/player/playerLeft.png");
 					break;
 				case SDLK_RIGHT:
-					mVelX += PLAYER_VEL; 
-					gPlayerTexture.loadFromFile("images/player/playerRight.png");
-					break;
 				case SDLK_d: 
 					mVelX += PLAYER_VEL; 
 					gPlayerTexture.loadFromFile("images/player/playerRight.png");
@@ -70,26 +58,18 @@ class character{
 			else if(e.type == SDL_KEYUP && e.key.repeat == 0){ //If a key was released
 				switch (e.key.keysym.sym){ //Adjust the velocity
 				case SDLK_UP: 
-					mVelY += PLAYER_VEL; 
-					break;
 				case SDLK_w:
 					mVelY += PLAYER_VEL;
 					break;
 				case SDLK_DOWN:
-					mVelY -= PLAYER_VEL;
-					break; 
 				case SDLK_s:
 					mVelY -= PLAYER_VEL; 
 					break;
 				case SDLK_LEFT:
-					mVelX += PLAYER_VEL;
-					break;
 				case SDLK_a:
 					mVelX += PLAYER_VEL; 
 					break;
 				case SDLK_RIGHT: 
-					mVelX -= PLAYER_VEL;	
-					break;
 				case SDLK_d:
 					mVelX -= PLAYER_VEL;	
 					break;
